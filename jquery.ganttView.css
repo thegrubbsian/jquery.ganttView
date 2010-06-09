@@ -4,7 +4,7 @@ body {
 }
 
 table.ganttview {
-	width: 100%;
+
 	border-collapse: collapse;
 }
 
@@ -27,6 +27,10 @@ td.ganttview-series-name {
 td.ganttview-series-name,
 td.ganttview-series-cell {
 	height: 26px;
+}
+
+td.ganttview-series-cell {
+	width: 18px;
 }
 
 div.ganttview-item-block {

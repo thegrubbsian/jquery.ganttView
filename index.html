@@ -34,33 +34,64 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td class="ganttview-item-name" rowspan="2">Feature 1</td>
-				<td class="ganttview-series-name">Planned</td>
-				<td class="ganttview-series-cell">
-					<div class="ganttview-item-block"></div>
-				</td>
-				<td class="ganttview-series-cell"></td>
-				<td class="ganttview-series-cell"></td>
-				<td class="ganttview-series-cell"></td>
-				<td class="ganttview-series-cell"></td>
-				<td class="ganttview-series-cell"></td>
-				<td class="ganttview-series-cell"></td>
-				<td class="ganttview-series-cell"></td>
-				<td class="ganttview-series-cell"></td>
-			</tr>
-			<tr>
-				<td class="ganttview-series-name">Actual</td>
-				<td class="ganttview-series-cell"></td>
-				<td class="ganttview-series-cell"></td>
-				<td class="ganttview-series-cell"></td>
-				<td class="ganttview-series-cell"></td>
-				<td class="ganttview-series-cell"></td>
-				<td class="ganttview-series-cell"></td>
-				<td class="ganttview-series-cell"></td>
-				<td class="ganttview-series-cell"></td>
-				<td class="ganttview-series-cell"></td>
-			</tr>
+			<item>
+				<tr>
+					<td class="ganttview-item-name" rowspan="2">Feature 1</td>
+					<td class="ganttview-series-name">Planned</td>
+					<td class="ganttview-series-cell">
+						<div class="ganttview-item-block"></div>
+					</td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+				</tr>
+				<tr>
+					<td class="ganttview-series-name">Actual</td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+				</tr>
+			</item>
+			<item>
+				<tr>
+					<td class="ganttview-item-name" rowspan="2">Feature 1</td>
+					<td class="ganttview-series-name">Planned</td>
+					<td class="ganttview-series-cell">
+						<div class="ganttview-item-block"></div>
+					</td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+				</tr>
+				<tr>
+					<td class="ganttview-series-name">Actual</td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+					<td class="ganttview-series-cell"></td>
+				</tr>
+			</item>
 		</tbody>
 	</table>
 
@@ -73,8 +104,8 @@
 		$(function () {
 			$("#ganttChart").ganttView({ 
 				data: ganttData,
-				start: new Date(2010,00,01),
-				end: new Date(2010,02,01)
+				start: new Date(2010,02,01),
+				end: new Date(2010,03,15)
 			});
 		});
 	</script>
