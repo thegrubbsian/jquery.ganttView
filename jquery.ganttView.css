@@ -1,0 +1,40 @@
+body {
+	font-family: tahoma, verdana, helvetica;
+	font-size: 0.8em;
+}
+
+table.ganttview {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+table.ganttview td,
+table.ganttview table td {
+	padding: 3px;
+	border: 1px solid #999;
+}
+
+td.ganttview-header-item,
+td.ganttview-itemrow-itemname {
+	width: 100px;
+}
+
+td.ganttview-item-name,
+td.ganttview-series-name {
+	width: 100px;
+}
+
+td.ganttview-series-name,
+td.ganttview-series-cell {
+	height: 26px;
+}
+
+div.ganttview-item-block {
+	position: absolute;
+	height: 20px;
+	background-color: #666;
+	margin-top: -10px;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
