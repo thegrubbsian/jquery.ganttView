@@ -1,11 +1,16 @@
 body {
 	font-family: tahoma, verdana, helvetica;
 	font-size: 0.8em;
+	padding: 10px;
 }
 
 table.ganttview {
-
 	border-collapse: collapse;
+	width: 1500px;
+}
+
+table.ganttview th {
+	font-weight: normal;
 }
 
 table.ganttview td,
@@ -26,11 +31,11 @@ td.ganttview-series-name {
 
 td.ganttview-series-name,
 td.ganttview-series-cell {
-	height: 26px;
+	height: 25px;
 }
 
 td.ganttview-series-cell {
-	width: 18px;
+	width: 25px;
 }
 
 div.ganttview-item-block {

@@ -54,8 +54,7 @@ rollup: string (day, week, month)
 					}
 				}
 			}
-			thead.append(monthTr);
-			thead.append(dateTr);
+			thead.append(monthTr).append(dateTr);
 			tbl.append(thead);
 		},
 		addGridToTable: function (tbl, data, months) {
@@ -68,12 +67,9 @@ rollup: string (day, week, month)
 				var itemTd = $("<td class='ganttview-item-name' rowspan='" + data[i].series.length + "'>" + data[i].name + "</td>");
 				tr.append(itemTd);
 				
-				for (var j = 0; j < data[i].series.length; j++) {
-					var seriesTd = $("<td class='ganttview-series-name'>" + data[i].series[0].name + "</td>");
-					tr.append(seriesTd);
-					Gantt.addCellsToSeriesRow(tr, months);
-				}
-				
+				var seriesTd = $("<td class='ganttview-series-name'>" + data[i].series[0].name + "</td>");
+				tr.append(seriesTd);
+				Gantt.addCellsToSeriesRow(tr, months);
 				tbody.append(tr);
 				
 				for (var j = 1; j < data[i].series.length; j++) {
