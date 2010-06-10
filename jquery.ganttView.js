@@ -132,8 +132,8 @@ var ArrayUtils = {
 
 var DateUtils = {
 	daysBetween: function (start, end) {
-		var count = 0;
-		while (start.compareTo(end) == -1) { count = count + 1; start.addDays(1); }
+		var count = 0, date = start.clone();
+		while (date.compareTo(end) == -1) { count = count + 1; date.addDays(1); }
 		return count;
 	}
 };
