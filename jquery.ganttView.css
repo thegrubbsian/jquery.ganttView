@@ -4,46 +4,75 @@ body {
 	padding: 10px;
 }
 
-table.ganttview {
-	border-collapse: collapse;
-	width: 1500px;
+div.ganttview,
+div.ganttview-hzheader,
+div.ganttview-hzheader-months,
+div.ganttview-hzheader-days,
+div.ganttview-vtheader,
+div.ganttview-vtheader-item,
+div.ganttview-grid-row {
+	overflow: hidden;
 }
 
-table.ganttview th {
-	font-weight: normal;
+div.ganttview-hzheader-month,
+div.ganttview-hzheader-day,
+div.ganttview-vtheader,
+div.ganttview-vtheader-item-name,
+div.ganttview-vtheader-series,
+div.ganttview-grid,
+div.ganttview-grid-row-cell {
+	float: left;
 }
 
-table.ganttview td,
-table.ganttview table td {
-	padding: 3px;
-	border: 1px solid #999;
+div.ganttview-hzheader-month,
+div.ganttview-hzheader-day {
+	text-align: center;
 }
 
-td.ganttview-header-item,
-td.ganttview-itemrow-itemname {
-	width: 100px;
+/* Horizontal Header */
+
+div.ganttview-hzheader {
+	margin-left: 200px;
 }
 
-td.ganttview-item-name,
-td.ganttview-series-name {
-	width: 100px;
-}
-
-td.ganttview-series-name,
-td.ganttview-series-cell {
-	height: 25px;
-}
-
-td.ganttview-series-cell {
-	width: 25px;
-}
-
-div.ganttview-item-block {
-	position: absolute;
+div.ganttview-hzheader-month {
+	width: 60px;
 	height: 20px;
-	background-color: #666;
-	margin-top: -10px;
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
+	border-right: 1px solid #d0d0d0;
+}
+
+div.ganttview-hzheader-day {
+	width: 20px;
+	height: 20px;
+	border-right: 1px solid #d0d0d0;
+}
+
+/* Vertical Header */
+
+div.ganttview-vtheader {
+	width: 200px;
+}
+
+div.ganttview-vtheader-item-name,
+div.ganttview-vtheader-series {
+	width: 100px;
+}
+
+div.ganttview-vtheader-series-name {
+	height: 20px;
+}
+
+/* Grid */
+div.ganttview-grid {
+	width: 180px;
+}
+
+div.ganttview-grid-row {
+	width: 180px;
+}
+
+div.ganttview-grid-row-cell {
+	width: 20px;
+	height: 20px;
+	border-right: 1px solid #d0d0d0;
 }
