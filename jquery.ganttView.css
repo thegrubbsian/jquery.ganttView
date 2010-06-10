@@ -10,7 +10,8 @@ div.ganttview-hzheader-months,
 div.ganttview-hzheader-days,
 div.ganttview-vtheader,
 div.ganttview-vtheader-item,
-div.ganttview-grid-row {
+div.ganttview-grid-row,
+div.ganttview-slide-container {
 	overflow: hidden;
 }
 
@@ -32,10 +33,6 @@ div.ganttview-hzheader-day {
 
 /* Horizontal Header */
 
-div.ganttview-hzheader {
-	margin-left: 200px;
-}
-
 div.ganttview-hzheader-month {
 	width: 60px;
 	height: 20px;
@@ -52,6 +49,7 @@ div.ganttview-hzheader-day {
 /* Vertical Header */
 
 div.ganttview-vtheader {
+	margin-top: 40px;
 	width: 200px;
 }
 
@@ -85,7 +83,7 @@ div.ganttview-grid-row-cell {
 
 div.ganttview-block {
 	position: absolute;
-	height: 16px;
+	height: 14px;
 	background-color: #E5ECF9;
 	border: 1px solid #c0c0c0;
 	border-radius: 3px;
