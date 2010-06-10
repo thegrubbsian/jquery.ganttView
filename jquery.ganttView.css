@@ -12,14 +12,13 @@ div.ganttview-vtheader,
 div.ganttview-vtheader-item,
 div.ganttview-grid-row,
 div.ganttview-slide-container {
-	overflow: hidden;
+	/*overflow: hidden;*/
 }
 
 div.ganttview-hzheader-month,
 div.ganttview-hzheader-day,
 div.ganttview-vtheader,
 div.ganttview-vtheader-item-name,
-div.ganttview-vtheader-series,
 div.ganttview-grid,
 div.ganttview-grid-row-cell {
 	float: left;
@@ -50,11 +49,10 @@ div.ganttview-hzheader-day {
 
 div.ganttview-vtheader {
 	margin-top: 40px;
-	width: 200px;
+	width: 100px;
 }
 
-div.ganttview-vtheader-item-name,
-div.ganttview-vtheader-series {
+div.ganttview-vtheader-item-name {
 	width: 100px;
 }
 
@@ -63,26 +61,33 @@ div.ganttview-vtheader-series-name {
 }
 
 
+/* Slider */
+
+div.ganttview-slide-container {
+	overflow: auto;
+}
+
+
 /* Grid */
-
-div.ganttview-grid {
-	width: 180px;
-}
-
-div.ganttview-grid-row {
-	width: 180px;
-}
 
 div.ganttview-grid-row-cell {
 	width: 20px;
-	height: 20px;
+	height: 21px;
 	border-right: 1px solid #d0d0d0;
 }
 
 /* Blocks */
 
+div.ganttview-blocks {
+	margin-top: 40px;
+}
+
+div.ganttview-block-container {
+	height: 21px;
+}
+
 div.ganttview-block {
-	position: absolute;
+	position: relative;
 	height: 14px;
 	background-color: #E5ECF9;
 	border: 1px solid #c0c0c0;

@@ -5,13 +5,15 @@ data: object
 start: date
 end: date
 cellWidth: number
+cellHeight: number
+slideWidth: number
 */
 
 (function (jQuery) {
     jQuery.fn.ganttView = function (options) {
 		
 		var els = this;
-		var defaults = { cellWidth: 21, vHeaderWidth: 100 };
+		var defaults = { cellWidth: 21, cellHeight: 21, slideWidth: 400, vHeaderWidth: 100 };
 		var opts = $.extend(defaults, options);
 		var months = Gantt.getMonths(opts.start, opts.end);
 		
@@ -20,14 +22,19 @@ cellWidth: number
 			var container = $(this);
 			var div = $("<div>", { "class": "ganttview" });
 			
-			Gantt.addVtHeader(div, opts.data);
+			Gantt.addVtHeader(div, opts.data, opts.cellHeight);
 			
-			var slideDiv = $("<div>", { "class": "ganttview-slide-container" });
+			var slideDiv = $("<div>", {
+				"class": "ganttview-slide-container",
+ 				"css": { "width": opts.slideWidth + "px" }
+			});
+			
 			Gantt.addHzHeader(slideDiv, months, opts.cellWidth);
 			Gantt.addGrid(slideDiv, opts.data, months, opts.cellWidth);
-			div.append(slideDiv);
+			Gantt.addBlockContainers(slideDiv, opts.data);
+			Gantt.addBlocks(slideDiv, opts.data, opts.cellWidth, opts.start);
 			
-			Gantt.addBlocks(div, opts.data, opts.cellWidth, opts.start);
+			div.append(slideDiv);
 			
 			container.append(div);
 		});
@@ -49,17 +56,15 @@ cellWidth: number
 			return months;
 		},
 		
-		addVtHeader: function (div, data) {
+		addVtHeader: function (div, data, cellHeight) {
 			var headerDiv = $("<div>", { "class": "ganttview-vtheader" });
 			for (var i = 0; i < data.length; i++) {
 				var itemDiv = $("<div>", { "class": "ganttview-vtheader-item" });
-				itemDiv.append($("<div>", { "class": "ganttview-vtheader-item-name" }).append(data[i].name));
-				var seriesDiv = $("<div>", { "class": "ganttview-vtheader-series" });
-				for (var j = 0; j < data[i].series.length; j++) {
-					seriesDiv.append($("<div>", { "class": "ganttview-vtheader-series-name" }).append(data[i].series[j].name));
-				}
-				itemDiv.append(seriesDiv);
-				headerDiv.append(itemDiv)
+				itemDiv.append($("<div>", { 
+					"class": "ganttview-vtheader-item-name",
+					"css": { "height": (data[i].series.length * cellHeight) + "px" } 
+				}).append(data[i].name));
+				headerDiv.append(itemDiv);
 			}
 			div.append(headerDiv);
 		},
@@ -68,17 +73,22 @@ cellWidth: number
 			var headerDiv = $("<div>", { "class": "ganttview-hzheader" });
 			var monthsDiv = $("<div>", { "class": "ganttview-hzheader-months" });
 			var daysDiv = $("<div>", { "class": "ganttview-hzheader-days" });
+			var totalW = 0;
 			for (var i = 0; i < 12; i++) {
 				if (months[i]) {
+					var w = months[i].length * cellWidth;
+					totalW = totalW + w;
 					monthsDiv.append($("<div>", {
 						"class": "ganttview-hzheader-month",
-						"css": { "width": ((months[i].length * cellWidth) - 1) + "px" }
+						"css": { "width": (w - 1) + "px" }
 					}).append(Gantt.monthNames[i]));
 					for (var j = 0; j < months[i].length; j++) {
 						daysDiv.append($("<div>", { "class": "ganttview-hzheader-day" }).append(months[i][j].getDate()));
 					}
 				}
 			}
+			monthsDiv.css("width", totalW + "px");
+			daysDiv.css("width", totalW + "px");
 			headerDiv.append(monthsDiv).append(daysDiv);
 			div.append(headerDiv);
 		},
@@ -104,8 +114,18 @@ cellWidth: number
 			div.append(gridDiv);
 		},
 		
+		addBlockContainers: function (div, data) {
+			var blocksDiv = $("<div>", { "class": "ganttview-blocks" });
+			for (var i = 0; i < data.length; i++) {
+				for (var j = 0; j < data[i].series.length; j++) {
+					blocksDiv.append($("<div>", { "class": "ganttview-block-container" }));
+				}
+			}
+			div.append(blocksDiv);
+		},
+		
 		addBlocks: function (div, data, cellWidth, start) {
-			var rows = $("div.ganttview-grid div.ganttview-grid-row", div);
+			var rows = $("div.ganttview-blocks div.ganttview-block-container", div);
 			var rowIdx = 0;
 			for (var i = 0; i < data.length; i++) {
 				for (var j = 0; j < data[i].series.length; j++) {
@@ -143,168 +163,3 @@ var DateUtils = {
 		return count;
 	}
 };
-
-
-
-/* SAMPLE GENERATED MARKUP
-
-<div class="ganttview">
-
-	<div class="ganttview-vtheader">
-		<div class="ganttview-vtheader-item">
-			<div class="ganttview-vtheader-item-name">Feature 1</div>
-			<div class="ganttview-vtheader-series">
-				<div class="ganttview-vtheader-series-name">Planned</div>
-				<div class="ganttview-vtheader-series-name">Actual</div>
-			</div>
-		</div>
-		<div class="ganttview-vtheader-item">
-			<div class="ganttview-vtheader-item-name">Feature 2</div>
-			<div class="ganttview-vtheader-series">
-				<div class="ganttview-vtheader-series-name">Planned</div>
-				<div class="ganttview-vtheader-series-name">Actual</div>
-			</div>
-		</div>
-	</div>
-	
-	<div class="ganttview-slider">
-	
-		<div class="ganttview-hzheader">
-			<div class="ganttview-hzheader-months">
-				<div class="ganttview-hzheader-month">Jan</div>
-				<div class="ganttview-hzheader-month">Feb</div>
-				<div class="ganttview-hzheader-month">Mar</div>
-			</div>
-			<div class="ganttview-hzheader-days">
-				<div class="ganttview-hzheader-day">1</div>
-				<div class="ganttview-hzheader-day">2</div>
-				<div class="ganttview-hzheader-day">3</div>
-				<div class="ganttview-hzheader-day">1</div>
-				<div class="ganttview-hzheader-day">2</div>
-				<div class="ganttview-hzheader-day">3</div>
-				<div class="ganttview-hzheader-day">1</div>
-				<div class="ganttview-hzheader-day">2</div>
-				<div class="ganttview-hzheader-day">3</div>
-			</div>
-		</div>
-	
-		<div class="ganttview-grid">
-			<div class="ganttview-grid-row">
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-			</div>
-			<div class="ganttview-grid-row">
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-			</div>
-			<div class="ganttview-grid-row">
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-			</div>
-			<div class="ganttview-grid-row">
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-				<div class="ganttview-grid-row-cell"></div>
-			</div>
-		</div>
-	
-	</div>
-	
-</div>
-
-*/
-
-
-
-
-/*
-
-createTable: function (months) {
-	var tbl = $("<table>", { "class": "ganttview" });
-	var w = 200;
-	for (var i = 0; i < months.length; i++) {
-		if (months[i]) { w = w + months[i].length * 28; }
-	}
-	tbl.css("width", w + "px");
-	return tbl;
-},
-addHeaderToTable: function (tbl, months) {
-	var thead = $("<thead></thead>");
-	var monthTr = $("<tr></tr>");
-	var emptyHdr = "<th rowspan='2'>&nbsp;</th>";
-	monthTr.append(emptyHdr).append(emptyHdr);
-	var dateTr = $("<tr></tr>");
-	for (var i = 0; i < 12; i++) {
-		if (months[i]) {
-			monthTr.append("<th colspan='" + months[i].length + "' class='ganttview-header-month'>" + Gantt.monthNames[i] + "</th>");
-			for (var j = 0; j < months[i].length; j++) {
-				dateTr.append("<th class='ganttview-header-day'>" + months[i][j].getDate() + "</th>");
-			}
-		}
-	}
-	thead.append(monthTr).append(dateTr);
-	tbl.append(thead);
-},
-addGridToTable: function (tbl, data, months) {
-	
-	var tbody = $("<tbody></tbody>");
-	
-	for (var i = 0; i < data.length; i++) {
-		
-		var tr = $("<tr></tr>");
-		var itemTd = $("<td class='ganttview-item-name' rowspan='" + data[i].series.length + "'>" + data[i].name + "</td>");
-		tr.append(itemTd);
-		
-		var seriesTd = $("<td class='ganttview-series-name'>" + data[i].series[0].name + "</td>");
-		tr.append(seriesTd);
-		Gantt.addCellsToSeriesRow(tr, months);
-		tbody.append(tr);
-		
-		for (var j = 1; j < data[i].series.length; j++) {
-			tr = $("<tr></tr>");
-			var seriesTd = $("<td class='ganttview-series-name'>" + data[i].series[j].name + "</td>");
-			tr.append(seriesTd);
-			Gantt.addCellsToSeriesRow(tr, months);
-			tbody.append(tr);
-		}
-	}
-	
-	tbl.append(tbody);
-},
-addCellsToSeriesRow: function (tr, months) {
-	for (var i = 0; i < 12; i++) {
-		if (months[i]) {
-			for (var j = 0; j < months[i].length; j++) {
-				tr.append("<td class='ganttview-series-cell'></td>");
-			}
-		}
-	}
-}
-*/
