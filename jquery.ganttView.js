@@ -1,4 +1,10 @@
 /*
+jQuery.ganttView v.0.7
+Copyright (c) 2010 JC Grubbs - jc.grubbs@devmynd.com
+MIT License Applies
+*/
+
+/*
 Options
 -----------------
 showWeekends: boolean
