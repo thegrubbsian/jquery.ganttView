@@ -53,7 +53,7 @@ div.ganttview-hzheader-day {
 
 div.ganttview-vtheader {
 	margin-top: 41px;
-	width: 200px;
+	width: 240px;
 	overflow: hidden;
 }
 
@@ -62,14 +62,14 @@ div.ganttview-vtheader-item {
 }
 
 div.ganttview-vtheader-item-name {
-	width: 95px;
+	width: 100px;
 	padding-left: 5px;
 	border-top: 1px solid #d0d0d0;
 	line-height: 21px;
 }
 
 div.ganttview-vtheader-series-name {
-	width: 95px;
+	width: 130px;
 	height: 21px;
 	border-top: 1px solid #d0d0d0;
 	line-height: 21px;
@@ -122,7 +122,7 @@ div.ganttview-block {
 
 div.ganttview-block-text {
 	position: absolute;
-	height: 15px;
+	height: 12px;
 	font-size: 0.8em;
 	color: #999;
 	padding: 2px 3px;
