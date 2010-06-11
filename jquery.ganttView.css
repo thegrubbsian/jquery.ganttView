@@ -4,21 +4,11 @@ body {
 	padding: 10px;
 }
 
-div.ganttview,
-div.ganttview-hzheader,
-div.ganttview-hzheader-months,
-div.ganttview-hzheader-days,
-div.ganttview-vtheader,
-div.ganttview-vtheader-item,
-div.ganttview-grid-row,
-div.ganttview-slide-container {
-	/*overflow: hidden;*/
-}
-
 div.ganttview-hzheader-month,
 div.ganttview-hzheader-day,
 div.ganttview-vtheader,
 div.ganttview-vtheader-item-name,
+div.ganttview-vtheader-series,
 div.ganttview-grid,
 div.ganttview-grid-row-cell {
 	float: left;
@@ -29,6 +19,16 @@ div.ganttview-hzheader-day {
 	text-align: center;
 }
 
+div.ganttview-grid-row-cell.last,
+div.ganttview-hzheader-day.last,
+div.ganttview-hzheader-month.last {
+	border-right: none;
+}
+
+div.ganttview {
+	border: 1px solid #999;
+}
+
 
 /* Horizontal Header */
 
@@ -36,12 +36,16 @@ div.ganttview-hzheader-month {
 	width: 60px;
 	height: 20px;
 	border-right: 1px solid #d0d0d0;
+	line-height: 20px;
 }
 
 div.ganttview-hzheader-day {
 	width: 20px;
 	height: 20px;
-	border-right: 1px solid #d0d0d0;
+	border-right: 1px solid #f0f0f0;
+	border-top: 1px solid #d0d0d0;
+	line-height: 20px;
+	color: #777;
 }
 
 
@@ -49,15 +53,24 @@ div.ganttview-hzheader-day {
 
 div.ganttview-vtheader {
 	margin-top: 40px;
-	width: 100px;
+	width: 200px;
+	overflow: hidden;
+}
+
+div.ganttview-vtheader-item {
+	overflow: hidden;
+	border-top: 1px solid #d0d0d0;
+	padding-top: 5px;
 }
 
 div.ganttview-vtheader-item-name {
-	width: 100px;
+	width: 95px;
+	padding-left: 5px;
 }
 
 div.ganttview-vtheader-series-name {
-	height: 20px;
+	width: 100px;
+	height: 16px;
 }
 
 
@@ -65,6 +78,7 @@ div.ganttview-vtheader-series-name {
 
 div.ganttview-slide-container {
 	overflow: auto;
+	border-left: 1px solid #999;
 }
 
 
@@ -73,8 +87,9 @@ div.ganttview-slide-container {
 div.ganttview-grid-row-cell {
 	width: 20px;
 	height: 21px;
-	border-right: 1px solid #d0d0d0;
+	border-right: 1px solid #f0f0f0;
 }
+
 
 /* Blocks */
 

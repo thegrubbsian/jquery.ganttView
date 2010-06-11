@@ -35,8 +35,13 @@ slideWidth: number
 			Gantt.addBlocks(slideDiv, opts.data, opts.cellWidth, opts.start);
 			
 			div.append(slideDiv);
-			
 			container.append(div);
+			
+			var w = $("div.ganttview-vtheader", container).outerWidth() + 
+				$("div.ganttview-slide-container", container).outerWidth();
+			container.css("width", (w + 2) + "px");
+			
+			Gantt.applyLastClass(container);
 		});
 	};
 	
@@ -62,8 +67,13 @@ slideWidth: number
 				var itemDiv = $("<div>", { "class": "ganttview-vtheader-item" });
 				itemDiv.append($("<div>", { 
 					"class": "ganttview-vtheader-item-name",
-					"css": { "height": (data[i].series.length * cellHeight) + "px" } 
+					"css": { "height": ((data[i].series.length * cellHeight) - 6) + "px" } 
 				}).append(data[i].name));
+				var seriesDiv = $("<div>", { "class": "ganttview-vtheader-series" });
+				for (var j = 0; j < data[i].series.length; j++) {
+					seriesDiv.append($("<div>", { "class": "ganttview-vtheader-series-name" }).append(data[i].series[j].name));
+				}
+				itemDiv.append(seriesDiv);
 				headerDiv.append(itemDiv);
 			}
 			div.append(headerDiv);
@@ -133,15 +143,25 @@ slideWidth: number
 					var offset = DateUtils.daysBetween(start, data[i].series[j].start);
 					var blockDiv = $("<div>", { 
 						"class": "ganttview-block", 
+						"title": data[i].series[j].name + ", " + size + "days",
 						"css": { 
-							"width": ((size * cellWidth) + 3) + "px",
-							"margin-left": ((offset * cellWidth) - 3) + "px"
+							"width": ((size * cellWidth) - 9) + "px",
+							"margin-left": ((offset * cellWidth) + 3) + "px"
 						}
 					});
+					if (data[i].series[j].color) {
+						blockDiv.css("background-color", data[i].series[j].color);
+					}
 					$(rows[rowIdx]).append(blockDiv);
 					rowIdx = rowIdx + 1;
 				}
 			}
+		},
+		
+		applyLastClass: function (div) {
+			$("div.ganttview-grid-row div.ganttview-grid-row-cell:last-child", div).addClass("last");
+			$("div.ganttview-hzheader-days div.ganttview-hzheader-day:last-child", div).addClass("last");
+			$("div.ganttview-hzheader-months div.ganttview-hzheader-month:last-child", div).addClass("last");
 		}
 		
 	};
@@ -161,5 +181,9 @@ var DateUtils = {
 		var count = 0, date = start.clone();
 		while (date.compareTo(end) == -1) { count = count + 1; date.addDays(1); }
 		return count;
+	},
+	isWeekend: function (date) {
+		var ord = date.getOrdinalNumber();
+		
 	}
 };
