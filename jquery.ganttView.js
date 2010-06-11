@@ -166,24 +166,24 @@ slideWidth: number
 		
 	};
 	
+	var ArrayUtils = {
+		contains: function (arr, obj) {
+			var has = false;
+			for (var i = 0; i < arr.length; i++) { if (arr[i] == obj) { has = true; } }
+			return has;
+		}
+	};
+
+	var DateUtils = {
+		daysBetween: function (start, end) {
+			var count = 0, date = start.clone();
+			while (date.compareTo(end) == -1) { count = count + 1; date.addDays(1); }
+			return count;
+		},
+		isWeekend: function (date) {
+			var ord = date.getOrdinalNumber();
+
+		}
+	};
+	
 })(jQuery);
-
-var ArrayUtils = {
-	contains: function (arr, obj) {
-		var has = false;
-		for (var i = 0; i < arr.length; i++) { if (arr[i] == obj) { has = true; } }
-		return has;
-	}
-};
-
-var DateUtils = {
-	daysBetween: function (start, end) {
-		var count = 0, date = start.clone();
-		while (date.compareTo(end) == -1) { count = count + 1; date.addDays(1); }
-		return count;
-	},
-	isWeekend: function (date) {
-		var ord = date.getOrdinalNumber();
-		
-	}
-};
