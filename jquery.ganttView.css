@@ -119,3 +119,11 @@ div.ganttview-block {
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 }
+
+div.ganttview-block-text {
+	position: absolute;
+	height: 15px;
+	font-size: 0.8em;
+	color: #999;
+	padding: 2px 3px;
+}

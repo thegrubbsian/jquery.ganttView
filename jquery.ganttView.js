@@ -154,7 +154,7 @@ slideWidth: number
 					var offset = DateUtils.daysBetween(start, data[i].series[j].start);
 					var blockDiv = jQuery("<div>", { 
 						"class": "ganttview-block", 
-						"title": data[i].series[j].name + ", " + size + "days",
+						"title": data[i].series[j].name + ", " + size + " days",
 						"css": { 
 							"width": ((size * cellWidth) - 9) + "px",
 							"margin-left": ((offset * cellWidth) + 3) + "px"
@@ -163,6 +163,7 @@ slideWidth: number
 					if (data[i].series[j].color) {
 						blockDiv.css("background-color", data[i].series[j].color);
 					}
+					blockDiv.append($("<div>", { "class": "ganttview-block-text" }).text(size));
 					jQuery(rows[rowIdx]).append(blockDiv);
 					rowIdx = rowIdx + 1;
 				}
