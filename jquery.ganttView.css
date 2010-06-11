@@ -70,7 +70,7 @@ div.ganttview-vtheader-item-name {
 
 div.ganttview-vtheader-series-name {
 	width: 100px;
-	height: 16px;
+	height: 19px;
 }
 
 
@@ -88,6 +88,7 @@ div.ganttview-grid-row-cell {
 	width: 20px;
 	height: 21px;
 	border-right: 1px solid #f0f0f0;
+	border-top: 1px solid #f0f0f0;
 }
 
 
@@ -98,7 +99,8 @@ div.ganttview-blocks {
 }
 
 div.ganttview-block-container {
-	height: 21px;
+	height: 17px;
+	padding-top: 5px;
 }
 
 div.ganttview-block {
