@@ -28,24 +28,24 @@ slideWidth: number
 			vHeaderWidth: 100
 		};
 		var opts = jQuery.extend(defaults, options);
-		var months = Gantt.getMonths(opts.start, opts.end);
+		var months = Chart.getMonths(opts.start, opts.end);
 		
 		els.each(function () {
 			
 			var container = jQuery(this);
 			var div = jQuery("<div>", { "class": "ganttview" });
 			
-			Gantt.addVtHeader(div, opts.data, opts.cellHeight);
+			Chart.addVtHeader(div, opts.data, opts.cellHeight);
 			
 			var slideDiv = jQuery("<div>", {
 				"class": "ganttview-slide-container",
  				"css": { "width": opts.slideWidth + "px" }
 			});
 			
-			Gantt.addHzHeader(slideDiv, months, opts.cellWidth);
-			Gantt.addGrid(slideDiv, opts.data, months, opts.cellWidth, opts.showWeekends);
-			Gantt.addBlockContainers(slideDiv, opts.data);
-			Gantt.addBlocks(slideDiv, opts.data, opts.cellWidth, opts.start);
+			Chart.addHzHeader(slideDiv, months, opts.cellWidth);
+			Chart.addGrid(slideDiv, opts.data, months, opts.cellWidth, opts.showWeekends);
+			Chart.addBlockContainers(slideDiv, opts.data);
+			Chart.addBlocks(slideDiv, opts.data, opts.cellWidth, opts.start);
 			
 			div.append(slideDiv);
 			container.append(div);
@@ -54,11 +54,11 @@ slideWidth: number
 				jQuery("div.ganttview-slide-container", container).outerWidth();
 			container.css("width", (w + 2) + "px");
 			
-			Gantt.applyLastClass(container);
+			Chart.applyLastClass(container);
 		});
 	};
 	
-	var Gantt = {
+	var Chart = {
 		
 		monthNames: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
 		
@@ -105,7 +105,7 @@ slideWidth: number
 					monthsDiv.append(jQuery("<div>", {
 						"class": "ganttview-hzheader-month",
 						"css": { "width": (w - 1) + "px" }
-					}).append(Gantt.monthNames[i]));
+					}).append(Chart.monthNames[i]));
 					for (var j = 0; j < months[i].length; j++) {
 						daysDiv.append(jQuery("<div>", { "class": "ganttview-hzheader-day" })
 							.append(months[i][j].getDate()));
