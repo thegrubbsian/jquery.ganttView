@@ -4,12 +4,6 @@ Copyright (c) 2010 JC Grubbs - jc.grubbs@devmynd.com
 MIT License Applies
 */
 
-body {
-	font-family: tahoma, verdana, helvetica;
-	font-size: 0.8em;
-	padding: 10px;
-}
-
 div.ganttview-hzheader-month,
 div.ganttview-hzheader-day,
 div.ganttview-vtheader,
