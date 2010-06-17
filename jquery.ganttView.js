@@ -23,7 +23,7 @@ slideWidth: number
         var defaults = {
             showWeekends: true,
             cellWidth: 21,
-            cellHeight: 21,
+            cellHeight: 31,
             slideWidth: 400,
             vHeaderWidth: 100
         };

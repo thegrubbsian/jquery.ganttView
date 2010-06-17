@@ -13,7 +13,7 @@ var ganttData = [
 		]
 	}, 
 	{
-		id: 3, name: "Feature 3", series: [
+		id: 3, name: "Feature 3 - Here is a really long name to blow up the CSS", series: [
 			{ name: "Planned", start: new Date(2010,00,11), end: new Date(2010,01,03) },
 			{ name: "Actual", start: new Date(2010,00,15), end: new Date(2010,01,03), color: "#f0f0f0" }
 		]
