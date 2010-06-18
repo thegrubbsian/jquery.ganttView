@@ -1,5 +1,5 @@
 /*
-jQuery.ganttView v.0.7.1
+jQuery.ganttView v.0.7.2
 Copyright (c) 2010 JC Grubbs - jc.grubbs@devmynd.com
 MIT License Applies
 */
@@ -25,7 +25,8 @@ slideWidth: number
             cellWidth: 21,
             cellHeight: 31,
             slideWidth: 400,
-            vHeaderWidth: 100
+            vHeaderWidth: 100,
+            blockClick: null
         };
         var opts = jQuery.extend(defaults, options);
         var months = Chart.getMonths(opts.start, opts.end);
@@ -55,6 +56,8 @@ slideWidth: number
             container.css("width", (w + 2) + "px");
 
             Chart.applyLastClass(container);
+
+            Events.bindBlockClick(container, opts.blockClick);
         });
     };
 
@@ -157,15 +160,23 @@ slideWidth: number
             var rowIdx = 0;
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < data[i].series.length; j++) {
-                    var size = DateUtils.daysBetween(data[i].series[j].start, data[i].series[j].end);
-                    var offset = DateUtils.daysBetween(start, data[i].series[j].start);
+                    var series = data[i].series[j];
+                    var size = DateUtils.daysBetween(series.start, series.end);
+                    var offset = DateUtils.daysBetween(start, series.start);
                     var blockDiv = jQuery("<div>", {
                         "class": "ganttview-block",
-                        "title": data[i].series[j].name + ", " + size + " days",
+                        "title": series.name + ", " + size + " days",
                         "css": {
                             "width": ((size * cellWidth) - 9) + "px",
                             "margin-left": ((offset * cellWidth) + 3) + "px"
                         }
+                    }).data("block-data", {
+                        id: data[i].id,
+                        itemName: data[i].name,
+                        seriesName: series.name,
+                        start: Date.parse(series.start),
+                        end: Date.parse(series.end),
+                        color: series.color
                     });
                     if (data[i].series[j].color) {
                         blockDiv.css("background-color", data[i].series[j].color);
@@ -183,6 +194,15 @@ slideWidth: number
             jQuery("div.ganttview-hzheader-months div.ganttview-hzheader-month:last-child", div).addClass("last");
         }
 
+    };
+
+    var Events = {
+
+        bindBlockClick: function (div, callback) {
+            $("div.ganttview-block").live("click", function () {
+                if (callback) { callback($(this).data("block-data")); }
+            });
+        }
     };
 
     var ArrayUtils = {

@@ -1,5 +1,5 @@
 /*
-jQuery.ganttView v.0.7
+jQuery.ganttView v.0.7.2
 Copyright (c) 2010 JC Grubbs - jc.grubbs@devmynd.com
 MIT License Applies
 */
@@ -59,6 +59,7 @@ div.ganttview-vtheader {
 
 div.ganttview-vtheader-item {
 	overflow: hidden;
+	color: #666;
 }
 
 div.ganttview-vtheader-item-name {
