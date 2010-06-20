@@ -162,30 +162,30 @@ slideWidth: number
                 for (var j = 0; j < data[i].series.length; j++) {
                     var series = data[i].series[j];
                     var size = DateUtils.daysBetween(series.start, series.end);
-					if (size && size > 0) {
-						if (size > 365) { size = 365; } // Keep blocks from overflowing a year
-                    	var offset = DateUtils.daysBetween(start, series.start);
-	                    var blockDiv = jQuery("<div>", {
-	                        "class": "ganttview-block",
-	                        "title": series.name + ", " + size + " days",
-	                        "css": {
-	                            "width": ((size * cellWidth) - 9) + "px",
-	                            "margin-left": ((offset * cellWidth) + 3) + "px"
-	                        }
-	                    }).data("block-data", {
-	                        id: data[i].id,
-	                        itemName: data[i].name,
-	                        seriesName: series.name,
-	                        start: Date.parse(series.start),
-	                        end: Date.parse(series.end),
-	                        color: series.color
-	                    });
-	                    if (data[i].series[j].color) {
-	                        blockDiv.css("background-color", data[i].series[j].color);
-	                    }
-	                    blockDiv.append($("<div>", { "class": "ganttview-block-text" }).text(size));
-	                    jQuery(rows[rowIdx]).append(blockDiv);
-					}
+                    if (size && size > 0) {
+                        if (size > 365) { size = 365; } // Keep blocks from overflowing a year
+                        var offset = DateUtils.daysBetween(start, series.start);
+                        var blockDiv = jQuery("<div>", {
+                            "class": "ganttview-block",
+                            "title": series.name + ", " + size + " days",
+                            "css": {
+                                "width": ((size * cellWidth) - 9) + "px",
+                                "margin-left": ((offset * cellWidth) + 3) + "px"
+                            }
+                        }).data("block-data", {
+                            id: data[i].id,
+                            itemName: data[i].name,
+                            seriesName: series.name,
+                            start: Date.parse(series.start),
+                            end: Date.parse(series.end),
+                            color: series.color
+                        });
+                        if (data[i].series[j].color) {
+                            blockDiv.css("background-color", data[i].series[j].color);
+                        }
+                        blockDiv.append($("<div>", { "class": "ganttview-block-text" }).text(size));
+                        jQuery(rows[rowIdx]).append(blockDiv);
+                    }
                     rowIdx = rowIdx + 1;
                 }
             }
@@ -218,8 +218,9 @@ slideWidth: number
 
     var DateUtils = {
         daysBetween: function (start, end) {
-			if (!start || !end) return 0;
+            if (!start || !end) { return 0; }
             start = Date.parse(start); end = Date.parse(end);
+            if (start.getYear() == 1901 || end.getYear() == 8099) { return 0; }
             var count = 0, date = start.clone();
             while (date.compareTo(end) == -1) { count = count + 1; date.addDays(1); }
             return count;
