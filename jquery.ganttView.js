@@ -14,6 +14,7 @@ end: date
 cellWidth: number
 cellHeight: number
 slideWidth: number
+blockClick: function
 */
 
 (function (jQuery) {

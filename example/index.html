@@ -28,7 +28,8 @@
 				data: ganttData,
 				start: new Date(2010,00,01),
 				end: new Date(2010,04,15),
-				slideWidth: 900
+				slideWidth: 900,
+				blockClick: function (data) { alert("You clicked a block!"); }
 			});
 		});
 	</script>
