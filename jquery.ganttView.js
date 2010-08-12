@@ -14,7 +14,14 @@ end: date
 cellWidth: number
 cellHeight: number
 slideWidth: number
-blockClick: function
+behavior: {
+	clickable: boolean,
+	draggable: boolean,
+	resizable: boolean,
+	onClick: function,
+	onDrag: function,
+	onResize: function
+}
 */
 
 (function (jQuery) {
@@ -27,9 +34,16 @@ blockClick: function
             cellHeight: 31,
             slideWidth: 400,
             vHeaderWidth: 100,
-            blockClick: null
+            behavior: {
+            	clickable: true,
+            	draggable: true,
+            	resizable: true,
+            	onClick: null,
+            	onDrag: null,
+            	onResize: null
+            }
         };
-        var opts = jQuery.extend(defaults, options);
+        var opts = jQuery.extend(true, defaults, options);
         var months = Chart.getMonths(opts.start, opts.end);
 
         els.each(function () {
@@ -58,13 +72,16 @@ blockClick: function
 
             Chart.applyLastClass(container);
 
-            Events.bindBlockClick(container, opts.blockClick);
+            if (opts.behavior.clickable) { Behavior.bindBlockClick(container, opts.behavior.onClick); }
+            if (opts.behavior.resizable) { Behavior.bindBlockResize(container, opts.cellWidth, opts.cellHeight, opts.behavior.onResize); }
+            if (opts.behavior.draggable) { Behavior.bindBlockDrag(container, opts.cellWidth, opts.behavior.onDrag); }
         });
     };
 
     var Chart = {
 
         monthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+		dayNames: ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"],
 
         getMonths: function (start, end) {
             start = Date.parse(start); end = Date.parse(end);
@@ -200,12 +217,32 @@ blockClick: function
 
     };
 
-    var Events = {
-
+    var Behavior = {
         bindBlockClick: function (div, callback) {
-            $("div.ganttview-block").live("click", function () {
+            $("div.ganttview-block", div).live("click", function () {
                 if (callback) { callback($(this).data("block-data")); }
             });
+        },
+        bindBlockResize: function (div, cellWidth, cellHeight, callback) {
+        	$("div.ganttview-block", div).resizable({
+        		grid: cellWidth, 
+        		maxHeight: cellHeight,
+        		stop: function () {
+        			// Remove top and left properties to avoid incorrect block positioning,
+        			// set position to relative to keep blocks relative to scrollbar when scrolling
+        			$(this).css("top", "").css("left", "").css("position", "relative");
+        			if (callback) { callback($(this).data("block-data")); }
+        		}
+        	});
+        },
+        bindBlockDrag: function (div, cellWidth, callback) {
+        	$("div.ganttview-block", div).draggable({
+        		axis: "x", grid: [cellWidth, cellWidth],
+        		stop: function () {
+        			$(this).css("top", "").css("position", "relative");
+        			if (callback) { callback($(this).data("block-data")); }
+        		}
+        	});
         }
     };
 
