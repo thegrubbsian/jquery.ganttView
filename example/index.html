@@ -32,7 +32,9 @@
 				end: new Date(2010,04,15),
 				slideWidth: 900,
 				behavior: {
-					onClick: function (data) { alert("You clicked a block!"); },
+					onClick: function (data) { alert(uneval(data)); },
+					onResize: function (data) { alert(uneval(data)); },
+					onDrag: function (data) { alert(uneval(data)); }
 				}
 			});
 		});

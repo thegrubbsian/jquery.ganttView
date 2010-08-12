@@ -1,5 +1,5 @@
 /*
-jQuery.ganttView v.0.7.2
+jQuery.ganttView v.0.8.0
 Copyright (c) 2010 JC Grubbs - jc.grubbs@devmynd.com
 MIT License Applies
 */
@@ -201,7 +201,7 @@ behavior: {
                         if (data[i].series[j].color) {
                             blockDiv.css("background-color", data[i].series[j].color);
                         }
-                        blockDiv.append($("<div>", { "class": "ganttview-block-text" }).text(size));
+                        blockDiv.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
                         jQuery(rows[rowIdx]).append(blockDiv);
                     }
                     rowIdx = rowIdx + 1;
@@ -219,28 +219,38 @@ behavior: {
 
     var Behavior = {
         bindBlockClick: function (div, callback) {
-            $("div.ganttview-block", div).live("click", function () {
-                if (callback) { callback($(this).data("block-data")); }
+            jQuery("div.ganttview-block", div).live("click", function () {
+                if (callback) { callback(jQuery(this).data("block-data")); }
             });
         },
         bindBlockResize: function (div, cellWidth, cellHeight, callback) {
-        	$("div.ganttview-block", div).resizable({
+        	jQuery("div.ganttview-block", div).resizable({
         		grid: cellWidth, 
         		maxHeight: cellHeight,
         		stop: function () {
+        			var block = jQuery(this);
+        			var start = block.data("block-data").start;
+        			var days = Math.round(block.outerWidth() / cellWidth);
+        			block.data("block-data").end = start.addDays(days);
         			// Remove top and left properties to avoid incorrect block positioning,
         			// set position to relative to keep blocks relative to scrollbar when scrolling
-        			$(this).css("top", "").css("left", "").css("position", "relative");
-        			if (callback) { callback($(this).data("block-data")); }
+        			block.css("top", "").css("left", "").css("position", "relative");
+        			if (callback) { callback(block.data("block-data")); }
         		}
         	});
         },
         bindBlockDrag: function (div, cellWidth, callback) {
-        	$("div.ganttview-block", div).draggable({
+        	jQuery("div.ganttview-block", div).draggable({
         		axis: "x", grid: [cellWidth, cellWidth],
         		stop: function () {
-        			$(this).css("top", "").css("position", "relative");
-        			if (callback) { callback($(this).data("block-data")); }
+        			var block = jQuery(this);
+        			// The math here is to transfer the relative left property to the margin-left
+        			// property which avoids a conflict between dragging and resizing
+        			var l = parseInt(block.css("left").replace("px", ""));
+        			var m = parseInt(block.css("margin-left").replace("px", ""));
+        			block.css("margin-left", (m + l) + "px")
+        				.css("top", "").css("left", "").css("position", "relative");
+        			if (callback) { callback(block.data("block-data")); }
         		}
         	});
         }

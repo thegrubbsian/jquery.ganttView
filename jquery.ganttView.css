@@ -1,5 +1,5 @@
 /*
-jQuery.ganttView v.0.7.2
+jQuery.ganttView v.0.8.0
 Copyright (c) 2010 JC Grubbs - jc.grubbs@devmynd.com
 MIT License Applies
 */
@@ -127,4 +127,11 @@ div.ganttview-block-text {
 	font-size: 0.8em;
 	color: #999;
 	padding: 2px 3px;
+}
+
+
+/* Adjustments for jQuery UI Styling */
+
+div.ganttview-block div.ui-resizable-handle.ui-resizable-s {
+	bottom: -0;
 }
