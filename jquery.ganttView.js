@@ -246,7 +246,8 @@ behavior: {
         },
         updateDataAndPosition: function (div, block, cellWidth, startDate) {
         	var container = jQuery("div.ganttview-slide-container", div);
-			var offset = block.offset().left - container.offset().left - 1;
+        	var scroll = container.scrollLeft();
+			var offset = block.offset().left - container.offset().left - 1 + scroll;
 			
 			// Set new start date
 			var daysFromStart = Math.round(offset / cellWidth);
