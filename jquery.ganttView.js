@@ -74,7 +74,7 @@ behavior: {
 
             if (opts.behavior.clickable) { Behavior.bindBlockClick(container, opts.behavior.onClick); }
             if (opts.behavior.resizable) { Behavior.bindBlockResize(container, opts.cellWidth, opts.cellHeight, opts.behavior.onResize); }
-            if (opts.behavior.draggable) { Behavior.bindBlockDrag(container, opts.cellWidth, opts.behavior.onDrag); }
+            if (opts.behavior.draggable) { Behavior.bindBlockDrag(container, opts.cellWidth, opts.start, opts.behavior.onDrag); }
         });
     };
 
@@ -229,9 +229,7 @@ behavior: {
         		maxHeight: cellHeight,
         		stop: function () {
         			var block = jQuery(this);
-        			var start = block.data("block-data").start;
-        			var days = Math.round(block.outerWidth() / cellWidth);
-        			block.data("block-data").end = start.addDays(days);
+        			Behavior.updateDatesBasedOnWidth(div, block, cellWidth);
         			// Remove top and left properties to avoid incorrect block positioning,
         			// set position to relative to keep blocks relative to scrollbar when scrolling
         			block.css("top", "").css("left", "").css("position", "relative");
@@ -239,11 +237,13 @@ behavior: {
         		}
         	});
         },
-        bindBlockDrag: function (div, cellWidth, callback) {
+        bindBlockDrag: function (div, cellWidth, startDate, callback) {
         	jQuery("div.ganttview-block", div).draggable({
         		axis: "x", grid: [cellWidth, cellWidth],
         		stop: function () {
         			var block = jQuery(this);
+        			Behavior.updateDatesBasedOnOffset(div, block, cellWidth, startDate);
+        			Behavior.updateDatesBasedOnWidth(div, block, cellWidth);
         			// The math here is to transfer the relative left property to the margin-left
         			// property which avoids a conflict between dragging and resizing
         			var l = parseInt(block.css("left").replace("px", ""));
@@ -253,6 +253,17 @@ behavior: {
         			if (callback) { callback(block.data("block-data")); }
         		}
         	});
+        },
+        updateDatesBasedOnOffset: function (div, block, cellWidth, startDate) {
+        	var container = jQuery("div.ganttview-slide-container", div);
+			var offset = block.offset().left - container.offset().left - 3;
+			var days = Math.round(cellWidth / offset);
+			block.data("block-data").start = startDate.clone().addDays(days);
+        },
+        updateDatesBasedOnWidth: function (div, block, cellWidth) {
+        	var start = block.data("block-data").start;
+			var days = Math.round(block.outerWidth() / cellWidth);
+			block.data("block-data").end.addDays(days);
         }
     };
 
