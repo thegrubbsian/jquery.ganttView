@@ -43,6 +43,11 @@ behavior: {
             	onResize: null
             }
         };
+        
+        // Insure that we have dates and not strings otherwise date.js can't operate
+        options.start = Date.parse(options.start);
+        options.end = Date.parse(options.end);
+        
         var opts = jQuery.extend(true, defaults, options);
         var months = Chart.getMonths(opts.start, opts.end);
 
