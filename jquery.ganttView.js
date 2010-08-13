@@ -73,7 +73,7 @@ behavior: {
             Chart.applyLastClass(container);
 
             if (opts.behavior.clickable) { Behavior.bindBlockClick(container, opts.behavior.onClick); }
-            if (opts.behavior.resizable) { Behavior.bindBlockResize(container, opts.cellWidth, opts.cellHeight, opts.behavior.onResize); }
+            if (opts.behavior.resizable) { Behavior.bindBlockResize(container, opts.cellWidth, opts.start, opts.behavior.onResize); }
             if (opts.behavior.draggable) { Behavior.bindBlockDrag(container, opts.cellWidth, opts.start, opts.behavior.onDrag); }
         });
     };
@@ -223,16 +223,13 @@ behavior: {
                 if (callback) { callback(jQuery(this).data("block-data")); }
             });
         },
-        bindBlockResize: function (div, cellWidth, cellHeight, callback) {
+        bindBlockResize: function (div, cellWidth, startDate, callback) {
         	jQuery("div.ganttview-block", div).resizable({
         		grid: cellWidth, 
-        		maxHeight: cellHeight,
+        		handles: "e,w",
         		stop: function () {
         			var block = jQuery(this);
-        			Behavior.updateDatesBasedOnWidth(div, block, cellWidth);
-        			// Remove top and left properties to avoid incorrect block positioning,
-        			// set position to relative to keep blocks relative to scrollbar when scrolling
-        			block.css("top", "").css("left", "").css("position", "relative");
+        			Behavior.updateDataAndPosition(div, block, cellWidth, startDate);
         			if (callback) { callback(block.data("block-data")); }
         		}
         	});
@@ -242,29 +239,29 @@ behavior: {
         		axis: "x", grid: [cellWidth, cellWidth],
         		stop: function () {
         			var block = jQuery(this);
-        			Behavior.updateDatesBasedOnOffset(div, block, cellWidth, startDate);
-        			Behavior.updateDatesBasedOnWidth(div, block, cellWidth);
-        			// The math here is to transfer the relative left property to the margin-left
-        			// property which avoids a conflict between dragging and resizing
-        			var l = parseInt(block.css("left").replace("px", ""));
-        			var m = parseInt(block.css("margin-left").replace("px", ""));
-        			block.css("margin-left", (m + l) + "px")
-        				.css("top", "").css("left", "").css("position", "relative");
+        			Behavior.updateDataAndPosition(div, block, cellWidth, startDate);
         			if (callback) { callback(block.data("block-data")); }
         		}
         	});
         },
-        updateDatesBasedOnOffset: function (div, block, cellWidth, startDate) {
+        updateDataAndPosition: function (div, block, cellWidth, startDate) {
         	var container = jQuery("div.ganttview-slide-container", div);
-			var offset = block.offset().left - container.offset().left - 3;
-			var days = Math.round(offset / cellWidth);
-			block.data("block-data").start = startDate.clone().addDays(days);
-        },
-        updateDatesBasedOnWidth: function (div, block, cellWidth) {
-        	var start = block.data("block-data").start;
+			var offset = block.offset().left - container.offset().left - 1;
+			
+			// Set new start date
+			var daysFromStart = Math.round(offset / cellWidth);
+			var newStart = startDate.clone().addDays(daysFromStart);
+			block.data("block-data").start = newStart;
+
+			// Set new end date
         	var width = block.outerWidth();
-			var days = Math.round(width / cellWidth) - 1;
-			block.data("block-data").end = start.clone().addDays(days);
+			var numberOfDays = Math.round(width / cellWidth) - 1;
+			block.data("block-data").end = newStart.clone().addDays(numberOfDays);
+			
+			// Remove top and left properties to avoid incorrect block positioning,
+        	// set position to relative to keep blocks relative to scrollbar when scrolling
+			block.css("top", "").css("left", "")
+				.css("position", "relative").css("margin-left", offset + "px");
         }
     };
 
