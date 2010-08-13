@@ -1,5 +1,5 @@
 /*
-jQuery.ganttView v.0.8.0
+jQuery.ganttView v.0.8.2
 Copyright (c) 2010 JC Grubbs - jc.grubbs@devmynd.com
 MIT License Applies
 */
@@ -72,9 +72,17 @@ behavior: {
 
             Chart.applyLastClass(container);
 
-            if (opts.behavior.clickable) { Behavior.bindBlockClick(container, opts.behavior.onClick); }
-            if (opts.behavior.resizable) { Behavior.bindBlockResize(container, opts.cellWidth, opts.start, opts.behavior.onResize); }
-            if (opts.behavior.draggable) { Behavior.bindBlockDrag(container, opts.cellWidth, opts.start, opts.behavior.onDrag); }
+            if (opts.behavior.clickable) { 
+            	Behavior.bindBlockClick(container, opts.behavior.onClick); 
+        	}
+        	
+            if (opts.behavior.resizable) { 
+            	Behavior.bindBlockResize(container, opts.cellWidth, opts.start, opts.behavior.onResize); 
+        	}
+            
+            if (opts.behavior.draggable) { 
+            	Behavior.bindBlockDrag(container, opts.cellWidth, opts.start, opts.behavior.onDrag); 
+        	}
         });
     };
 
@@ -103,11 +111,11 @@ behavior: {
                 itemDiv.append(jQuery("<div>", {
                     "class": "ganttview-vtheader-item-name",
                     "css": { "height": (data[i].series.length * cellHeight) + "px" }
-                }).append(data[i].name));
+                }).append(data[i].itemName));
                 var seriesDiv = jQuery("<div>", { "class": "ganttview-vtheader-series" });
                 for (var j = 0; j < data[i].series.length; j++) {
                     seriesDiv.append(jQuery("<div>", { "class": "ganttview-vtheader-series-name" })
-						.append(data[i].series[j].name));
+						.append(data[i].series[j].seriesName));
                 }
                 itemDiv.append(seriesDiv);
                 headerDiv.append(itemDiv);
@@ -183,30 +191,32 @@ behavior: {
                     if (size && size > 0) {
                         if (size > 365) { size = 365; } // Keep blocks from overflowing a year
                         var offset = DateUtils.daysBetween(start, series.start);
-                        var blockDiv = jQuery("<div>", {
+                        var block = jQuery("<div>", {
                             "class": "ganttview-block",
-                            "title": series.name + ", " + size + " days",
+                            "title": series.seriesName + ", " + size + " days",
                             "css": {
                                 "width": ((size * cellWidth) - 9) + "px",
                                 "margin-left": ((offset * cellWidth) + 3) + "px"
                             }
-                        }).data("block-data", {
-                            id: data[i].id,
-                            itemName: data[i].name,
-                            seriesName: series.name,
-                            start: Date.parse(series.start),
-                            end: Date.parse(series.end),
-                            color: series.color
                         });
+                        Chart.addBlockData(block, data[i], series);
                         if (data[i].series[j].color) {
-                            blockDiv.css("background-color", data[i].series[j].color);
+                            block.css("background-color", data[i].series[j].color);
                         }
-                        blockDiv.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
-                        jQuery(rows[rowIdx]).append(blockDiv);
+                        block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
+                        jQuery(rows[rowIdx]).append(block);
                     }
                     rowIdx = rowIdx + 1;
                 }
             }
+        },
+        
+        addBlockData: function (block, data, series) {
+        	// This allows custom attributes to be added to the series data objects
+        	// and makes them available to the 'data' argument of click, resize, and drag handlers
+        	var blockData = { id: data.id, itemName: data.itemName };
+        	jQuery.extend(blockData, series);
+        	block.data("block-data", blockData);
         },
 
         applyLastClass: function (div) {
@@ -218,11 +228,13 @@ behavior: {
     };
 
     var Behavior = {
+    	
         bindBlockClick: function (div, callback) {
             jQuery("div.ganttview-block", div).live("click", function () {
                 if (callback) { callback(jQuery(this).data("block-data")); }
             });
         },
+        
         bindBlockResize: function (div, cellWidth, startDate, callback) {
         	jQuery("div.ganttview-block", div).resizable({
         		grid: cellWidth, 
@@ -234,9 +246,11 @@ behavior: {
         		}
         	});
         },
+        
         bindBlockDrag: function (div, cellWidth, startDate, callback) {
         	jQuery("div.ganttview-block", div).draggable({
-        		axis: "x", grid: [cellWidth, cellWidth],
+        		axis: "x", 
+        		grid: [cellWidth, cellWidth],
         		stop: function () {
         			var block = jQuery(this);
         			Behavior.updateDataAndPosition(div, block, cellWidth, startDate);
@@ -244,6 +258,7 @@ behavior: {
         		}
         	});
         },
+        
         updateDataAndPosition: function (div, block, cellWidth, startDate) {
         	var container = jQuery("div.ganttview-slide-container", div);
         	var scroll = container.scrollLeft();
@@ -258,6 +273,7 @@ behavior: {
         	var width = block.outerWidth();
 			var numberOfDays = Math.round(width / cellWidth) - 1;
 			block.data("block-data").end = newStart.clone().addDays(numberOfDays);
+			$("div.ganttview-block-text", block).text(numberOfDays + 1);
 			
 			// Remove top and left properties to avoid incorrect block positioning,
         	// set position to relative to keep blocks relative to scrollbar when scrolling
@@ -267,6 +283,7 @@ behavior: {
     };
 
     var ArrayUtils = {
+    	
         contains: function (arr, obj) {
             var has = false;
             for (var i = 0; i < arr.length; i++) { if (arr[i] == obj) { has = true; } }
@@ -275,6 +292,7 @@ behavior: {
     };
 
     var DateUtils = {
+    	
         daysBetween: function (start, end) {
             if (!start || !end) { return 0; }
             start = Date.parse(start); end = Date.parse(end);
@@ -283,6 +301,7 @@ behavior: {
             while (date.compareTo(end) == -1) { count = count + 1; date.addDays(1); }
             return count;
         },
+        
         isWeekend: function (date) {
             return date.getDay() % 6 == 0;
         }

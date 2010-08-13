@@ -55,6 +55,7 @@ div.ganttview-vtheader {
 	margin-top: 41px;
 	width: 240px;
 	overflow: hidden;
+	background-color: #fff;
 }
 
 div.ganttview-vtheader-item {
