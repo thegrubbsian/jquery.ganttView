@@ -179,7 +179,7 @@ behavior: {
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < data[i].series.length; j++) {
                     var series = data[i].series[j];
-                    var size = DateUtils.daysBetween(series.start, series.end);
+                    var size = DateUtils.daysBetween(series.start, series.end) + 1;
                     if (size && size > 0) {
                         if (size > 365) { size = 365; } // Keep blocks from overflowing a year
                         var offset = DateUtils.daysBetween(start, series.start);
@@ -257,13 +257,14 @@ behavior: {
         updateDatesBasedOnOffset: function (div, block, cellWidth, startDate) {
         	var container = jQuery("div.ganttview-slide-container", div);
 			var offset = block.offset().left - container.offset().left - 3;
-			var days = Math.round(cellWidth / offset);
+			var days = Math.round(offset / cellWidth);
 			block.data("block-data").start = startDate.clone().addDays(days);
         },
         updateDatesBasedOnWidth: function (div, block, cellWidth) {
         	var start = block.data("block-data").start;
-			var days = Math.round(block.outerWidth() / cellWidth);
-			block.data("block-data").end.addDays(days);
+        	var width = block.outerWidth();
+			var days = Math.round(width / cellWidth) - 1;
+			block.data("block-data").end = start.clone().addDays(days);
         }
     };
 

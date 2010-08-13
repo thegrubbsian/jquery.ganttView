@@ -22,7 +22,7 @@ The plugin depends on the following libraries:
 
 Documentation
 -------------
-
+Documentation will be coming soon!  I promise...
 
 
 Contribution
@@ -33,8 +33,8 @@ Many people have been asking for more advanced features such as variable time-sp
 License
 -------
 The jQuery.ganttView plugin may be used free of charge under the conditions 
-of the following license.
------------------------------------------------------------------------------
+of the following license:
+
 The MIT License
 
 Copyright (c) 2010 Frank (JC) Grubbs - jc.grubbs@devmynd.com
