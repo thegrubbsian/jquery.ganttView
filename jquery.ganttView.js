@@ -9,8 +9,6 @@ Options
 -----------------
 showWeekends: boolean
 data: object
-start: date
-end: date
 cellWidth: number
 cellHeight: number
 slideWidth: number
@@ -44,11 +42,13 @@ behavior: {
             }
         };
         
-        // Insure that we have dates and not strings otherwise date.js can't operate
-        options.start = Date.parse(options.start);
-        options.end = Date.parse(options.end);
-        
         var opts = jQuery.extend(true, defaults, options);
+
+		var minDays = Math.floor((opts.slideWidth / opts.cellWidth)  + 5);
+		var startEnd = DateUtils.getBoundaryDatesFromData(opts.data, minDays);
+		opts.start = startEnd[0];
+		opts.end = startEnd[1];
+
         var dates = Chart.getDates(opts.start, opts.end);
 
         els.each(function () {
@@ -313,7 +313,28 @@ behavior: {
         
         isWeekend: function (date) {
             return date.getDay() % 6 == 0;
-        }
+        },
+
+		getBoundaryDatesFromData: function (data, minDays) {
+			var minStart = new Date(); maxEnd = new Date();
+			for (var i = 0; i < data.length; i++) {
+				for (var j = 0; j < data[i].series.length; j++) {
+					var start = Date.parse(data[i].series[j].start);
+					var end = Date.parse(data[i].series[j].end)
+					if (i == 0 && j == 0) { minStart = start; maxEnd = end; }
+					if (minStart.compareTo(start) == 1) { minStart = start; }
+					if (maxEnd.compareTo(end) == -1) { maxEnd = end; }
+				}
+			}
+			
+			// Insure that the width of the chart is at least the slide width to avoid empty
+			// whitespace to the right of the grid
+			if (DateUtils.daysBetween(minStart, maxEnd) < minDays) {
+				maxEnd = minStart.clone().addDays(minDays);
+			}
+			
+			return [minStart, maxEnd];
+		}
     };
 
 })(jQuery);
