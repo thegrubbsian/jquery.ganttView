@@ -1,5 +1,5 @@
 /*
-jQuery.ganttView v.0.8.2
+jQuery.ganttView v.0.8.8
 Copyright (c) 2010 JC Grubbs - jc.grubbs@devmynd.com
 MIT License Applies
 */
@@ -12,6 +12,7 @@ data: object
 cellWidth: number
 cellHeight: number
 slideWidth: number
+dataUrl: string
 behavior: {
 	clickable: boolean,
 	draggable: boolean,
@@ -76,18 +77,7 @@ behavior: {
             container.css("width", (w + 2) + "px");
 
             Chart.applyLastClass(container);
-
-            if (opts.behavior.clickable) { 
-            	Behavior.bindBlockClick(container, opts.behavior.onClick); 
-        	}
-        	
-            if (opts.behavior.resizable) { 
-            	Behavior.bindBlockResize(container, opts.cellWidth, opts.start, opts.behavior.onResize); 
-        	}
-            
-            if (opts.behavior.draggable) { 
-            	Behavior.bindBlockDrag(container, opts.cellWidth, opts.start, opts.behavior.onDrag); 
-        	}
+			Behavior.applyBehaviors(container, opts);
         });
     };
 
@@ -237,6 +227,21 @@ behavior: {
     };
 
     var Behavior = {
+	
+		applyBehaviors: function (container, opts) {
+			
+			if (opts.behavior.clickable) { 
+            	Behavior.bindBlockClick(container, opts.behavior.onClick); 
+        	}
+        	
+            if (opts.behavior.resizable) { 
+            	Behavior.bindBlockResize(container, opts.cellWidth, opts.start, opts.behavior.onResize); 
+        	}
+            
+            if (opts.behavior.draggable) { 
+            	Behavior.bindBlockDrag(container, opts.cellWidth, opts.start, opts.behavior.onDrag); 
+        	}
+		},
     	
         bindBlockClick: function (div, callback) {
             jQuery("div.ganttview-block", div).live("click", function () {
