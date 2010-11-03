@@ -49,7 +49,7 @@ behavior: {
         options.end = Date.parse(options.end);
         
         var opts = jQuery.extend(true, defaults, options);
-        var months = Chart.getMonths(opts.start, opts.end);
+        var dates = Chart.getDates(opts.start, opts.end);
 
         els.each(function () {
 
@@ -63,8 +63,8 @@ behavior: {
                 "css": { "width": opts.slideWidth + "px" }
             });
 
-            Chart.addHzHeader(slideDiv, months, opts.cellWidth);
-            Chart.addGrid(slideDiv, opts.data, months, opts.cellWidth, opts.showWeekends);
+            Chart.addHzHeader(slideDiv, dates, opts.cellWidth);
+            Chart.addGrid(slideDiv, opts.data, dates, opts.cellWidth, opts.showWeekends);
             Chart.addBlockContainers(slideDiv, opts.data);
             Chart.addBlocks(slideDiv, opts.data, opts.cellWidth, opts.start);
 
@@ -94,19 +94,24 @@ behavior: {
     var Chart = {
 
         monthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-		dayNames: ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"],
 
-        getMonths: function (start, end) {
-            start = Date.parse(start); end = Date.parse(end);
-            var months = []; months[start.getMonth()] = [start];
-            var last = start;
-            while (last.compareTo(end) == -1) {
-                var next = last.clone().addDays(1);
-                if (!months[next.getMonth()]) { months[next.getMonth()] = []; }
-                months[next.getMonth()].push(next);
-                last = next;
-            }
-            return months;
+		// Creates a 3 dimensional array [year][month][day] of every day 
+		// between the given start and end dates
+        getDates: function (start, end) {
+            var months = [];
+			months[start.getFullYear()] = [];
+			months[start.getFullYear()][start.getMonth()] = [start]
+			var last = start;
+			while (last.compareTo(end) == -1) {
+				var next = last.clone().addDays(1);
+				if (!months[next.getFullYear()]) { months[next.getFullYear()] = []; }
+				if (!months[next.getFullYear()][next.getMonth()]) { 
+					months[next.getFullYear()][next.getMonth()] = []; 
+				}
+				months[next.getFullYear()][next.getMonth()].push(next);
+				last = next;
+			}
+			return months;
         },
 
         addVtHeader: function (div, data, cellHeight) {
@@ -116,11 +121,11 @@ behavior: {
                 itemDiv.append(jQuery("<div>", {
                     "class": "ganttview-vtheader-item-name",
                     "css": { "height": (data[i].series.length * cellHeight) + "px" }
-                }).append(data[i].itemName));
+                }).append(data[i].name));
                 var seriesDiv = jQuery("<div>", { "class": "ganttview-vtheader-series" });
                 for (var j = 0; j < data[i].series.length; j++) {
                     seriesDiv.append(jQuery("<div>", { "class": "ganttview-vtheader-series-name" })
-						.append(data[i].series[j].seriesName));
+						.append(data[i].series[j].name));
                 }
                 itemDiv.append(seriesDiv);
                 headerDiv.append(itemDiv);
@@ -128,43 +133,45 @@ behavior: {
             div.append(headerDiv);
         },
 
-        addHzHeader: function (div, months, cellWidth) {
+        addHzHeader: function (div, dates, cellWidth) {
             var headerDiv = jQuery("<div>", { "class": "ganttview-hzheader" });
             var monthsDiv = jQuery("<div>", { "class": "ganttview-hzheader-months" });
             var daysDiv = jQuery("<div>", { "class": "ganttview-hzheader-days" });
             var totalW = 0;
-            for (var i = 0; i < 12; i++) {
-                if (months[i]) {
-                    var w = months[i].length * cellWidth;
-                    totalW = totalW + w;
-                    monthsDiv.append(jQuery("<div>", {
-                        "class": "ganttview-hzheader-month",
-                        "css": { "width": (w - 1) + "px" }
-                    }).append(Chart.monthNames[i]));
-                    for (var j = 0; j < months[i].length; j++) {
-                        daysDiv.append(jQuery("<div>", { "class": "ganttview-hzheader-day" })
-							.append(months[i][j].getDate()));
-                    }
-                }
-            }
+			for (var y in dates) {
+				for (var m in dates[y]) {
+					var w = dates[y][m].length * cellWidth;
+					totalW = totalW + w;
+					monthsDiv.append(jQuery("<div>", {
+						"class": "ganttview-hzheader-month",
+						"css": { "width": (w - 1) + "px" }
+					}).append(Chart.monthNames[m] + "/" + y));
+					for (var d in dates[y][m]) {
+						daysDiv.append(jQuery("<div>", { "class": "ganttview-hzheader-day" })
+							.append(months[y][m][d].getDate()));
+					}
+				}
+			}
             monthsDiv.css("width", totalW + "px");
             daysDiv.css("width", totalW + "px");
             headerDiv.append(monthsDiv).append(daysDiv);
             div.append(headerDiv);
         },
 
-        addGrid: function (div, data, months, cellWidth, showWeekends) {
+        addGrid: function (div, data, dates, cellWidth, showWeekends) {
             var gridDiv = jQuery("<div>", { "class": "ganttview-grid" });
             var rowDiv = jQuery("<div>", { "class": "ganttview-grid-row" });
-            for (var i = 0; i < 12; i++) {
-                if (months[i]) {
-                    for (var j = 0; j < months[i].length; j++) {
-                        var cellDiv = jQuery("<div>", { "class": "ganttview-grid-row-cell " });
-                        if (DateUtils.isWeekend(months[i][j]) && showWeekends) { cellDiv.addClass("ganttview-weekend"); }
-                        rowDiv.append(cellDiv);
-                    }
-                }
-            }
+			for (var y in dates) {
+				for (var m in dates[y]) {
+					for (var d in dates[y][m]) {
+						var cellDiv = jQuery("<div>", { "class": "ganttview-grid-row-cell" });
+						if (DateUtils.isWeekend(months[y][m][d]) && showWeekends) { 
+							cellDiv.addClass("ganttview-weekend"); 
+						}
+						rowDiv.append(cellDiv);
+					}
+				}
+			}
             var w = jQuery("div.ganttview-grid-row-cell", rowDiv).length * cellWidth;
             rowDiv.css("width", w + "px");
             gridDiv.css("width", w + "px");
@@ -198,7 +205,7 @@ behavior: {
                         var offset = DateUtils.daysBetween(start, series.start);
                         var block = jQuery("<div>", {
                             "class": "ganttview-block",
-                            "title": series.seriesName + ", " + size + " days",
+                            "title": series.name + ", " + size + " days",
                             "css": {
                                 "width": ((size * cellWidth) - 9) + "px",
                                 "margin-left": ((offset * cellWidth) + 3) + "px"
@@ -219,7 +226,7 @@ behavior: {
         addBlockData: function (block, data, series) {
         	// This allows custom attributes to be added to the series data objects
         	// and makes them available to the 'data' argument of click, resize, and drag handlers
-        	var blockData = { id: data.id, itemName: data.itemName };
+        	var blockData = { id: data.id, name: data.name };
         	jQuery.extend(blockData, series);
         	block.data("block-data", blockData);
         },
