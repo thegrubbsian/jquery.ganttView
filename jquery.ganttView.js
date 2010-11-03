@@ -293,7 +293,7 @@ behavior: {
         	var width = block.outerWidth();
 			var numberOfDays = Math.round(width / cellWidth) - 1;
 			block.data("block-data").end = newStart.clone().addDays(numberOfDays);
-			$("div.ganttview-block-text", block).text(numberOfDays + 1);
+			jQuery("div.ganttview-block-text", block).text(numberOfDays + 1);
 			
 			// Remove top and left properties to avoid incorrect block positioning,
         	// set position to relative to keep blocks relative to scrollbar when scrolling
