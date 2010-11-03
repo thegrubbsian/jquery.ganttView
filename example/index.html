@@ -30,21 +30,19 @@
 		$(function () {
 			$("#ganttChart").ganttView({ 
 				data: ganttData,
-				start: new Date(2010,00,01),
-				end: new Date(2010,04,15),
 				slideWidth: 900,
 				behavior: {
 					onClick: function (data) { 
 						var msg = "You clicked on an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
-						$("#eventMessage").text(msg);	
+						$("#eventMessage").text(msg);
 					},
 					onResize: function (data) { 
 						var msg = "You resized an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
-						$("#eventMessage").text(msg);	
+						$("#eventMessage").text(msg);
 					},
 					onDrag: function (data) { 
 						var msg = "You dragged an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
-						$("#eventMessage").text(msg);	
+						$("#eventMessage").text(msg);
 					}
 				}
 			});

@@ -36,49 +36,55 @@ behavior: {
             behavior: {
             	clickable: true,
             	draggable: true,
-            	resizable: true,
-            	onClick: null,
-            	onDrag: null,
-            	onResize: null
+            	resizable: true
             }
         };
         
         var opts = jQuery.extend(true, defaults, options);
 
-		var minDays = Math.floor((opts.slideWidth / opts.cellWidth)  + 5);
-		var startEnd = DateUtils.getBoundaryDatesFromData(opts.data, minDays);
-		opts.start = startEnd[0];
-		opts.end = startEnd[1];
+		if (opts.data) {
+			build();
+		} else if (opts.dataUrl) {
+			jQuery.getJSON(opts.dataUrl, function (data) { opts.data = data; build(); });
+		}
 
-        var dates = Chart.getDates(opts.start, opts.end);
+		function build() {
+			
+			var minDays = Math.floor((opts.slideWidth / opts.cellWidth)  + 5);
+			var startEnd = DateUtils.getBoundaryDatesFromData(opts.data, minDays);
+			opts.start = startEnd[0];
+			opts.end = startEnd[1];
 
-        els.each(function () {
+	        var dates = Chart.getDates(opts.start, opts.end);
 
-            var container = jQuery(this);
-            var div = jQuery("<div>", { "class": "ganttview" });
+	        els.each(function () {
 
-            Chart.addVtHeader(div, opts.data, opts.cellHeight);
+	            var container = jQuery(this);
+	            var div = jQuery("<div>", { "class": "ganttview" });
 
-            var slideDiv = jQuery("<div>", {
-                "class": "ganttview-slide-container",
-                "css": { "width": opts.slideWidth + "px" }
-            });
+	            Chart.addVtHeader(div, opts.data, opts.cellHeight);
 
-            Chart.addHzHeader(slideDiv, dates, opts.cellWidth);
-            Chart.addGrid(slideDiv, opts.data, dates, opts.cellWidth, opts.showWeekends);
-            Chart.addBlockContainers(slideDiv, opts.data);
-            Chart.addBlocks(slideDiv, opts.data, opts.cellWidth, opts.start);
+	            var slideDiv = jQuery("<div>", {
+	                "class": "ganttview-slide-container",
+	                "css": { "width": opts.slideWidth + "px" }
+	            });
 
-            div.append(slideDiv);
-            container.append(div);
+	            Chart.addHzHeader(slideDiv, dates, opts.cellWidth);
+	            Chart.addGrid(slideDiv, opts.data, dates, opts.cellWidth, opts.showWeekends);
+	            Chart.addBlockContainers(slideDiv, opts.data);
+	            Chart.addBlocks(slideDiv, opts.data, opts.cellWidth, opts.start);
 
-            var w = jQuery("div.ganttview-vtheader", container).outerWidth() +
-				jQuery("div.ganttview-slide-container", container).outerWidth();
-            container.css("width", (w + 2) + "px");
+	            div.append(slideDiv);
+	            container.append(div);
 
-            Chart.applyLastClass(container);
-			Behavior.applyBehaviors(container, opts);
-        });
+	            var w = jQuery("div.ganttview-vtheader", container).outerWidth() +
+					jQuery("div.ganttview-slide-container", container).outerWidth();
+	            container.css("width", (w + 2) + "px");
+
+	            Chart.applyLastClass(container);
+				Behavior.applyBehaviors(container, opts);
+	        });
+		}
     };
 
     var Chart = {
