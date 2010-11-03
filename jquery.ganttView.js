@@ -98,20 +98,20 @@ behavior: {
 		// Creates a 3 dimensional array [year][month][day] of every day 
 		// between the given start and end dates
         getDates: function (start, end) {
-            var months = [];
-			months[start.getFullYear()] = [];
-			months[start.getFullYear()][start.getMonth()] = [start]
+            var dates = [];
+			dates[start.getFullYear()] = [];
+			dates[start.getFullYear()][start.getMonth()] = [start]
 			var last = start;
 			while (last.compareTo(end) == -1) {
 				var next = last.clone().addDays(1);
-				if (!months[next.getFullYear()]) { months[next.getFullYear()] = []; }
-				if (!months[next.getFullYear()][next.getMonth()]) { 
-					months[next.getFullYear()][next.getMonth()] = []; 
+				if (!dates[next.getFullYear()]) { dates[next.getFullYear()] = []; }
+				if (!dates[next.getFullYear()][next.getMonth()]) { 
+					dates[next.getFullYear()][next.getMonth()] = []; 
 				}
-				months[next.getFullYear()][next.getMonth()].push(next);
+				dates[next.getFullYear()][next.getMonth()].push(next);
 				last = next;
 			}
-			return months;
+			return dates;
         },
 
         addVtHeader: function (div, data, cellHeight) {
@@ -148,7 +148,7 @@ behavior: {
 					}).append(Chart.monthNames[m] + "/" + y));
 					for (var d in dates[y][m]) {
 						daysDiv.append(jQuery("<div>", { "class": "ganttview-hzheader-day" })
-							.append(months[y][m][d].getDate()));
+							.append(dates[y][m][d].getDate()));
 					}
 				}
 			}
@@ -165,7 +165,7 @@ behavior: {
 				for (var m in dates[y]) {
 					for (var d in dates[y][m]) {
 						var cellDiv = jQuery("<div>", { "class": "ganttview-grid-row-cell" });
-						if (DateUtils.isWeekend(months[y][m][d]) && showWeekends) { 
+						if (DateUtils.isWeekend(dates[y][m][d]) && showWeekends) { 
 							cellDiv.addClass("ganttview-weekend"); 
 						}
 						rowDiv.append(cellDiv);
@@ -200,24 +200,21 @@ behavior: {
                 for (var j = 0; j < data[i].series.length; j++) {
                     var series = data[i].series[j];
                     var size = DateUtils.daysBetween(series.start, series.end) + 1;
-                    if (size && size > 0) {
-                        if (size > 365) { size = 365; } // Keep blocks from overflowing a year
-                        var offset = DateUtils.daysBetween(start, series.start);
-                        var block = jQuery("<div>", {
-                            "class": "ganttview-block",
-                            "title": series.name + ", " + size + " days",
-                            "css": {
-                                "width": ((size * cellWidth) - 9) + "px",
-                                "margin-left": ((offset * cellWidth) + 3) + "px"
-                            }
-                        });
-                        Chart.addBlockData(block, data[i], series);
-                        if (data[i].series[j].color) {
-                            block.css("background-color", data[i].series[j].color);
+					var offset = DateUtils.daysBetween(start, series.start);
+					var block = jQuery("<div>", {
+                        "class": "ganttview-block",
+                        "title": series.name + ", " + size + " days",
+                        "css": {
+                            "width": ((size * cellWidth) - 9) + "px",
+                            "margin-left": ((offset * cellWidth) + 3) + "px"
                         }
-                        block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
-                        jQuery(rows[rowIdx]).append(block);
+                    });
+                    Chart.addBlockData(block, data[i], series);
+                    if (data[i].series[j].color) {
+                        block.css("background-color", data[i].series[j].color);
                     }
+                    block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
+                    jQuery(rows[rowIdx]).append(block);
                     rowIdx = rowIdx + 1;
                 }
             }
@@ -295,7 +292,7 @@ behavior: {
     };
 
     var ArrayUtils = {
-    	
+	
         contains: function (arr, obj) {
             var has = false;
             for (var i = 0; i < arr.length; i++) { if (arr[i] == obj) { has = true; } }
