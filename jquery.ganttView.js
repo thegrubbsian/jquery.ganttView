@@ -24,9 +24,23 @@ behavior: {
 */
 
 (function (jQuery) {
-    jQuery.fn.ganttView = function (options) {
-
-        var els = this;
+	
+    jQuery.fn.ganttView = function () {
+    	
+    	var args = Array.prototype.slice.call(arguments);
+    	
+    	if (args.length == 1 && typeof(args[0]) == "object") {
+        	build.call(this, args[0]);
+    	}
+    	
+    	if (args.length == 2 && typeof(args[0]) == "string") {
+    		handleMethod.call(this, args[0], args[1]);
+    	}
+    };
+    
+    function build(options) {
+    	
+    	var els = this;
         var defaults = {
             showWeekends: true,
             cellWidth: 21,
@@ -59,18 +73,29 @@ behavior: {
 
 	            var container = jQuery(this);
 	            var div = jQuery("<div>", { "class": "ganttview" });
-	            var chart = new Chart(div, opts);
-	            chart.render();
+	            new Chart(div, opts).render();
 				container.append(div);
 				
 				var w = jQuery("div.ganttview-vtheader", container).outerWidth() +
 					jQuery("div.ganttview-slide-container", container).outerWidth();
 	            container.css("width", (w + 2) + "px");
 	            
-				Behavior.applyBehaviors(container, opts);
+	            new Behavior(container, opts).apply();
 	        });
 		}
-    };
+    }
+
+	function handleMethod(method, value) {
+		
+		if (method == "setSlideWidth") {
+			var div = $("div.ganttview", this);
+			div.each(function () {
+				var vtWidth = $("div.ganttview-vtheader", div).outerWidth();
+				$(div).width(vtWidth + value + 1);
+				$("div.ganttview-slide-container", this).width(value);
+			});
+		}
+	}
 
 	var Chart = function(div, opts) {
 		
@@ -237,54 +262,54 @@ behavior: {
 		};
 	}
 
-    var Behavior = {
-	
-		applyBehaviors: function (container, opts) {
+	var Behavior = function (div, opts) {
+		
+		function apply() {
 			
 			if (opts.behavior.clickable) { 
-            	Behavior.bindBlockClick(container, opts.behavior.onClick); 
+            	bindBlockClick(div, opts.behavior.onClick); 
         	}
         	
             if (opts.behavior.resizable) { 
-            	Behavior.bindBlockResize(container, opts.cellWidth, opts.start, opts.behavior.onResize); 
+            	bindBlockResize(div, opts.cellWidth, opts.start, opts.behavior.onResize); 
         	}
             
             if (opts.behavior.draggable) { 
-            	Behavior.bindBlockDrag(container, opts.cellWidth, opts.start, opts.behavior.onDrag); 
+            	bindBlockDrag(div, opts.cellWidth, opts.start, opts.behavior.onDrag); 
         	}
-		},
-    	
-        bindBlockClick: function (div, callback) {
+		}
+
+        function bindBlockClick(div, callback) {
             jQuery("div.ganttview-block", div).live("click", function () {
                 if (callback) { callback(jQuery(this).data("block-data")); }
             });
-        },
+        }
         
-        bindBlockResize: function (div, cellWidth, startDate, callback) {
+        function bindBlockResize(div, cellWidth, startDate, callback) {
         	jQuery("div.ganttview-block", div).resizable({
         		grid: cellWidth, 
         		handles: "e,w",
         		stop: function () {
         			var block = jQuery(this);
-        			Behavior.updateDataAndPosition(div, block, cellWidth, startDate);
+        			updateDataAndPosition(div, block, cellWidth, startDate);
         			if (callback) { callback(block.data("block-data")); }
         		}
         	});
-        },
+        }
         
-        bindBlockDrag: function (div, cellWidth, startDate, callback) {
+        function bindBlockDrag(div, cellWidth, startDate, callback) {
         	jQuery("div.ganttview-block", div).draggable({
         		axis: "x", 
         		grid: [cellWidth, cellWidth],
         		stop: function () {
         			var block = jQuery(this);
-        			Behavior.updateDataAndPosition(div, block, cellWidth, startDate);
+        			updateDataAndPosition(div, block, cellWidth, startDate);
         			if (callback) { callback(block.data("block-data")); }
         		}
         	});
-        },
+        }
         
-        updateDataAndPosition: function (div, block, cellWidth, startDate) {
+        function updateDataAndPosition(div, block, cellWidth, startDate) {
         	var container = jQuery("div.ganttview-slide-container", div);
         	var scroll = container.scrollLeft();
 			var offset = block.offset().left - container.offset().left - 1 + scroll;
@@ -305,7 +330,11 @@ behavior: {
 			block.css("top", "").css("left", "")
 				.css("position", "relative").css("margin-left", offset + "px");
         }
-    };
+        
+        return {
+        	apply: apply	
+        };
+	}
 
     var ArrayUtils = {
 	
