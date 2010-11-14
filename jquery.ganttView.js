@@ -11,6 +11,7 @@ showWeekends: boolean
 data: object
 cellWidth: number
 cellHeight: number
+start: date
 slideWidth: number
 dataUrl: string
 behavior: {
@@ -63,12 +64,11 @@ behavior: {
 		}
 
 		function build() {
-			
-			var minDays = Math.floor((opts.slideWidth / opts.cellWidth)  + 5);
-			var startEnd = DateUtils.getBoundaryDatesFromData(opts.data, minDays);
-			opts.start = startEnd[0];
-			opts.end = startEnd[1];
-			
+	            var minDays = Math.floor((opts.slideWidth / opts.cellWidth)  + 5);
+		    var startEnd = DateUtils.getBoundaryDatesFromData(opts.data, minDays);
+	            if (!opts.start) {opts.start = startEnd[0];}
+		    opts.end = startEnd[1];
+                    			
 	        els.each(function () {
 
 	            var container = jQuery(this);
@@ -223,8 +223,12 @@ behavior: {
                 for (var j = 0; j < data[i].series.length; j++) {
                     var series = data[i].series[j];
                     var size = DateUtils.daysBetween(series.start, series.end) + 1;
-					var offset = DateUtils.daysBetween(start, series.start);
-					var block = jQuery("<div>", {
+                    if (series.start >= start ) {
+                      var offset = DateUtils.daysBetween(start, series.start);                                           
+                    } else {
+                      var offset = -(DateUtils.daysBetween(series.start, start));
+                    }                    
+                    var block = jQuery("<div>", {
                         "class": "ganttview-block",
                         "title": series.name + ", " + size + " days",
                         "css": {
