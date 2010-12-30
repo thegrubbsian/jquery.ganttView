@@ -31,6 +31,7 @@
 			$("#ganttChart").ganttView({ 
 				data: ganttData,
 				slideWidth: 900,
+				start: new Date(2010,11,12),
 				behavior: {
 					onClick: function (data) { 
 						var msg = "You clicked on an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";

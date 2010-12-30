@@ -1,13 +1,13 @@
 var ganttData = [
 	{
 		id: 1, name: "Feature 1", series: [
-			{ name: "Planned", start: new Date(2010,10,01), end: new Date(2010,10,02) },
+			{ name: "Planned", start: "", end: "" },
 			{ name: "Actual", start: new Date(2010,10,02), end: new Date(2011,00,05), color: "#f0f0f0" }
 		]
 	}, 
 	{
 		id: 2, name: "Feature 2", series: [
-			{ name: "Planned", start: new Date(2010,10,05), end: new Date(2011,00,20) },
+			{ name: "Planned", start: "", end: "" },
 			{ name: "Actual", start: new Date(2010,10,06), end: new Date(2011,00,17), color: "#f0f0f0" },
 			{ name: "Projected", start: new Date(2010,10,06), end: new Date(2011,00,17), color: "#e0e0e0" }
 		]
