@@ -18,9 +18,12 @@ behavior: {
 	clickable: boolean,
 	draggable: boolean,
 	resizable: boolean,
+	hover: boolean,
 	onClick: function,
 	onDrag: function,
-	onResize: function
+	onResize: function,
+	onHover: function,
+	onLeave: function
 }
 */
 
@@ -51,7 +54,8 @@ behavior: {
             behavior: {
             	clickable: true,
             	draggable: true,
-            	resizable: true
+            	resizable: true,
+				hover: true
             }
         };
         
@@ -140,15 +144,22 @@ behavior: {
         function addVtHeader(div, data, cellHeight) {
             var headerDiv = jQuery("<div>", { "class": "ganttview-vtheader" });
             for (var i = 0; i < data.length; i++) {
-                var itemDiv = jQuery("<div>", { "class": "ganttview-vtheader-item" });
+                var itemDiv = jQuery("<div>", { "class": "ganttview-vtheader-item" });				
                 itemDiv.append(jQuery("<div>", {
+				    "id" : "ganttview-header-"+ data[i].id,
                     "class": "ganttview-vtheader-item-name",
-                    "css": { "height": (data[i].series.length * cellHeight) + "px" }
+                    "css": { "min-height": (data[i].series.length * cellHeight) + "px" }
                 }).append(data[i].name));
                 var seriesDiv = jQuery("<div>", { "class": "ganttview-vtheader-series" });
-                for (var j = 0; j < data[i].series.length; j++) {
-                    seriesDiv.append(jQuery("<div>", { "class": "ganttview-vtheader-series-name" })
-						.append(data[i].series[j].name));
+                for (var j = 0; j < data[i].series.length; j++) {	
+					//for (var k = 0; k < data[i].series[j].activities.length; k++) {					
+						seriesDiv.append(jQuery("<div>", 
+						{ "class": "ganttview-vtheader-series-name",
+						  "css": { "min-height": (data[i].series[j].activities.length * cellHeight) + "px" }
+						  }
+						)
+							.append(data[i].series[j].name));
+					//}
                 }
                 itemDiv.append(seriesDiv);
                 headerDiv.append(itemDiv);
@@ -200,7 +211,9 @@ behavior: {
             gridDiv.css("width", w + "px");
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < data[i].series.length; j++) {
-                    gridDiv.append(rowDiv.clone());
+					for (var k = 0; k < data[i].series[j].activities.length; k++) {
+                       gridDiv.append(rowDiv.clone());
+					}
                 }
             }
             div.append(gridDiv);
@@ -210,7 +223,10 @@ behavior: {
             var blocksDiv = jQuery("<div>", { "class": "ganttview-blocks" });
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < data[i].series.length; j++) {
-                    blocksDiv.append(jQuery("<div>", { "class": "ganttview-block-container" }));
+				    var seriesBlock =jQuery("<div>", { "class": "ganttview-series-container" }).appendTo(blocksDiv);
+					for (var k = 0; k < data[i].series[j].activities.length; k++) {
+						$(seriesBlock).append(jQuery("<div>", { "class": "ganttview-block-container" }));
+					}
                 }
             }
             div.append(blocksDiv);
@@ -222,39 +238,53 @@ behavior: {
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < data[i].series.length; j++) {
                     var series = data[i].series[j];
-                    if (series.start != "" && series.end != "" && Date.parse(series.end) >= start) {
-                      var size = DateUtils.daysBetween(series.start, series.end) + 1;
-                      var series_start = Date.parse(series.start);
-                      if (series_start >= start ) {
-                        var offset = DateUtils.daysBetween(start, series_start);
-                      } else {
-                        var offset = -(DateUtils.daysBetween(series_start, start));
-                      }
-                      var block = jQuery("<div>", {
-                          "class": "tooltip ganttview-block",
-                          "title": series.name + ", " + size + " days",
-                          "css": {
-                              "width": ((size * cellWidth) - 9) + "px",
-                              "margin-left": ((offset * cellWidth) + 3) + "px"
-                          }
-                      });
-                      addBlockData(block, data[i], series);
-                      if (data[i].series[j].color) {
-                          block.css("background-color", data[i].series[j].color);
-                      }
-                      block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
-                      jQuery(rows[rowIdx]).append(block);
-                    }
-                    rowIdx = rowIdx + 1;
+					for (var k = 0; k < series.activities.length; k++) {
+					    var activity = data[i].series[j].activities[k];
+						if (activity.start != "" && activity.end != "" && Date.parse(activity.end) >= start) {
+						  var size = DateUtils.daysBetween(activity.start, activity.end) + 1;
+						  var series_start = Date.parse(activity.start);
+						  if (series_start >= start ) {
+							var offset = DateUtils.daysBetween(start, series_start);
+						  } else {
+							var offset = -(DateUtils.daysBetween(series_start, start));
+						  }
+						  var block = jQuery("<div>", {
+							  "class": "tooltip ganttview-block",
+							  "title": activity.tooltip + ", " + size + " days",
+							  "css": {
+								  "width": ((size * cellWidth) - 9) + "px",
+								  "margin-left": ((offset * cellWidth) + 3) + "px"								  
+							  }
+						  });
+						  
+						  if (activity.color)
+						     block.css("background-color", activity.color);
+							 
+						  addBlockData(block, data[i], series, activity);
+						  if (data[i].series[j].color) {
+							  block.css("background-color", data[i].series[j].color);
+						  }
+											 
+						  if (activity.title)
+							  block.append(jQuery("<div>", { "class": "ganttview-block-text" }).html(activity.title));
+						  else
+							  block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
+							  
+						  jQuery(rows[rowIdx]).append(block);
+						}
+					
+						
+					}rowIdx = rowIdx + 1;
                 }
             }
         }
         
-        function addBlockData(block, data, series) {
+        function addBlockData(block, data, series, activity) {
         	// This allows custom attributes to be added to the series data objects
         	// and makes them available to the 'data' argument of click, resize, and drag handlers
         	var blockData = { id: data.id, name: data.name };
         	jQuery.extend(blockData, series);
+			jQuery.extend(blockData, activity);
         	block.data("block-data", blockData);
         }
 
@@ -284,12 +314,26 @@ behavior: {
             if (opts.behavior.draggable) { 
             	bindBlockDrag(div, opts.cellWidth, opts.start, opts.behavior.onDrag); 
         	}
+			
+			 if (opts.behavior.hover) { 
+            	bindHover(div, opts.behavior.onHover, opts.behavior.onLeave); 
+        	}
 		}
 
         function bindBlockClick(div, callback) {
             jQuery("div.ganttview-block", div).live("click", function () {
                 if (callback) { callback(jQuery(this).data("block-data")); }
             });
+        }
+		
+		function bindHover(div, callbackHover, callbackLeave) {
+            jQuery("div.ganttview-block", div).live("mouseover mouseout", function(event) {
+			  if ( event.type == "mouseover" ) {
+					if (callbackHover) { callbackHover(jQuery(this), jQuery(this).data("block-data")); }
+			  } else {
+					if (callbackLeave) { callbackLeave(jQuery(this), jQuery(this).data("block-data")); }
+			  }
+			});
         }
         
         function bindBlockResize(div, cellWidth, startDate, callback) {
@@ -335,7 +379,8 @@ behavior: {
 			// Remove top and left properties to avoid incorrect block positioning,
         	// set position to relative to keep blocks relative to scrollbar when scrolling
 			block.css("top", "").css("left", "")
-				.css("position", "relative").css("margin-left", offset + "px");
+				//.css("position", "relative")
+				.css("margin-left", offset + "px");
         }
         
         return {
@@ -371,13 +416,15 @@ behavior: {
 			var minStart = new Date(); maxEnd = new Date();
 			for (var i = 0; i < data.length; i++) {
 				for (var j = 0; j < data[i].series.length; j++) {
-				  if (data[i].series[j].start != "" && data[i].series[j].end != "") {
-				    var start = Date.parse(data[i].series[j].start);
-				    var end = Date.parse(data[i].series[j].end);
-				    if (i == 0 && j == 0) { minStart = start; maxEnd = end; }
-				    if (minStart.compareTo(start) == 1) { minStart = start; }
-				    if (maxEnd.compareTo(end) == -1) { maxEnd = end; }
-				  }
+					for (var k = 0; k < data[i].series[j].activities.length; k++) {								
+						if (data[i].series[j].activities[k].start != "" && data[i].series[j].activities[k].end != "") {
+							var start = Date.parse(data[i].series[j].activities[k].start);
+							var end = Date.parse(data[i].series[j].activities[k].end);
+							if (i == 0 && j == 0) { minStart = start; maxEnd = end; }
+							if (minStart.compareTo(start) == 1) { minStart = start; }
+							if (maxEnd.compareTo(end) == -1) { maxEnd = end; }
+						}
+					}
 				}
 			}
 			
@@ -388,6 +435,37 @@ behavior: {
 			}
 			
 			return [minStart, maxEnd];
+		},
+		
+		doesOverlap: function(e1, e2) {
+			  var e1start = e1.start.getTime();
+			  var e1end = e1.end.getTime();
+			  var e2start = e2.start.getTime();
+			  var e2end = e2.end.getTime();
+
+			  return (e1start > e2start && e1start < e2end || 
+				  e2start > e1start && e2start < e1end)
+		},
+		
+		getOverlaps: function(dates)
+		{
+		    var overlaps = 0;
+        
+			// sort the events by their start time
+			 dates.sort(function(eventOne, eventTwo){
+			      return eventOne.start - eventTwo.start;
+			 });
+			
+			for (var i = dates.length - 1; i >= 0; i--){
+					
+				var dateone = dates[i];
+				var datetwo = dates[i+1]
+					
+				if (doesOverlap(dateone, datetwo))
+       				overlaps++;
+			};
+			
+			return overlaps;
 		}
     };
 

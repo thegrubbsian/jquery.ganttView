@@ -72,7 +72,7 @@ div.ganttview-vtheader-item-name {
 
 div.ganttview-vtheader-series-name {
 	width: 130px;
-	height: 31px;
+	min-height: 31px;
 	border-top: 1px solid #d0d0d0;
 	line-height: 16px;
 	padding-left: 5px;
@@ -110,10 +110,11 @@ div.ganttview-blocks {
 div.ganttview-block-container {
 	height: 28px;
 	padding-top: 4px;
+	position: relative;
 }
 
-div.ganttview-block {
-	position: relative;
+.ganttview-block {
+	position: absolute;
 	height: 25px;
 	background-color: #E5ECF9;
 	border: 1px solid #c0c0c0;
@@ -122,7 +123,7 @@ div.ganttview-block {
 	-webkit-border-radius: 3px;
 }
 
-div.ganttview-block-text {
+.ganttview-block-text {
 	position: absolute;
 	height: 12px;
 	font-size: 0.8em;

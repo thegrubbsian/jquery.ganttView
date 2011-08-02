@@ -12,6 +12,31 @@
 			font-size: 0.8em;
 			padding: 10px;
 		}
+		div#test {}
+		div#left {}
+		div#right {}
+		
+		div#tooltip
+		{
+		   height: 50px;	
+		   z-index: 999;
+		   padding: 2px;
+		   color: black;		
+		  background-color:#eee;
+		  text-align:center;
+		  width:180px;
+		  -moz-border-radius:10px;
+		  -webkit-border-radius:10px;
+		  -webkit-box-shadow: 0px 0 3px rgba(0,0,0,0.25);
+ 		  -moz-box-shadow: 0px 0 3px rgba(0,0,0,0.25);
+ 		  box-shadow: 0px 0 3px rgba(0,0,0,0.25); 
+		   margin-top: 16px;
+		   margin-left: 16px;
+		   position: absolute;
+		   display: none;
+		}
+	
+
 	</style>
 	<title>jQuery Gantt</title>
 </head>
@@ -21,6 +46,14 @@
 	<br/><br/>
 	<div id="eventMessage"></div>
 
+	<div id="test">
+	  <div id="left">left</div><div id="right">right</div>
+	</div>
+	
+	<div id="tooltip">
+	
+	</div>
+	
 	<script type="text/javascript" src="../lib/jquery-1.4.2.js"></script>
 	<script type="text/javascript" src="../lib/date.js"></script>
 	<script type="text/javascript" src="../lib/jquery-ui-1.8.4.js"></script>
@@ -31,20 +64,24 @@
 			$("#ganttChart").ganttView({ 
 				data: ganttData,
 				slideWidth: 900,
-				start: new Date(2010,11,12),
+				start: new Date(2010,10,1),
 				behavior: {
 					onClick: function (data) { 
 						var msg = "You clicked on an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
 						$("#eventMessage").text(msg);
 					},
-					onResize: function (data) { 
-						var msg = "You resized an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+					onHover: function (item, data) {
+						var msg = "Mouse over for: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+						$("div#tooltip").html(msg).show().appendTo($(item));
 						$("#eventMessage").text(msg);
 					},
-					onDrag: function (data) { 
-						var msg = "You dragged an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+					onLeave: function (item, data) {
+						var msg = "Mouse leave for: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+						$("div#tooltip").hide();
 						$("#eventMessage").text(msg);
-					}
+					},
+					resizable: false,
+					hover: false
 				}
 			});
 			
