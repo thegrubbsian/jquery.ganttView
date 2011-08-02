@@ -1,5 +1,5 @@
 var ganttData = [
-	{
+	{ 
 		id: 1, name: "Workshop 1", 
 		series: [
 			{ name: "Engines", 
