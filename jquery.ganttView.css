@@ -26,7 +26,12 @@ div.ganttview-hzheader-month.last {
 }
 
 div.ganttview {
-	border: 1px solid #999;
+	border: 1px solid #8BA0BC;
+	background: #BCCADD  repeat-x 0 top;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius: 5px;
+	overflow:hidden;
 }
 
 
@@ -35,17 +40,21 @@ div.ganttview {
 div.ganttview-hzheader-month {
 	width: 60px;
 	height: 20px;
-	border-right: 1px solid #d0d0d0;
+	border-right: 1px solid #8BA0BC;
 	line-height: 20px;
+	background: #BCCADD   repeat-x 0 center;
+	overflow:hidden;
 }
 
 div.ganttview-hzheader-day {
 	width: 20px;
 	height: 20px;
-	border-right: 1px solid #f0f0f0;
-	border-top: 1px solid #d0d0d0;
+	border-right: 1px solid #8BA0BC;
+	border-top: 1px solid #8BA0BC;
+	border-bottom: 1px solid #8BA0BC;
 	line-height: 20px;
 	color: #777;
+	background: #BCCADD   repeat-x 0 center;
 }
 
 
@@ -53,29 +62,49 @@ div.ganttview-hzheader-day {
 
 div.ganttview-vtheader {
 	margin-top: 41px;
-	width: 240px;
+	width: 140px;
+	overflow: hidden;
+	background-color:transparent;
+}
+
+div.ganttview-vtheader-month-view {
+	margin-top: 41px;
+	width: 180px;
 	overflow: hidden;
 	background-color: #fff;
 }
 
 div.ganttview-vtheader-item {
 	overflow: hidden;
-	color: #666;
+	background-color:transparent;
 }
 
 div.ganttview-vtheader-item-name {
-	width: 100px;
+	width: 130px;
 	padding-left: 5px;
-	border-top: 1px solid #d0d0d0;
+	border-top: 1px solid #8BA0BC;
 	line-height: 16px;
+	background-color:transparent;
+	
 }
 
 div.ganttview-vtheader-series-name {
-	width: 130px;
+	width: 70px;
 	min-height: 31px;
 	border-top: 1px solid #d0d0d0;
+	text-align:center;
 	line-height: 16px;
 	padding-left: 5px;
+	background-color:transparent;
+}
+
+div.ganttview-vtheader-series-overlapping {
+	width: 0px;
+	min-height: 32px;
+	text-align:center;
+	line-height: 16px;
+	padding-left: 5px;
+	background-color:transparent;
 }
 
 
@@ -92,8 +121,10 @@ div.ganttview-slide-container {
 div.ganttview-grid-row-cell {
 	width: 20px;
 	height: 31px;
-	border-right: 1px solid #f0f0f0;
-	border-top: 1px solid #f0f0f0;
+	border-right: 1px solid #DCE3ED;
+	border-top: 1px solid #DCE3ED;
+	background-color: #FFFFFF;
+
 }
 
 div.ganttview-grid-row-cell.ganttview-weekend {
@@ -121,6 +152,7 @@ div.ganttview-block-container {
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
+	  background: #BCCADD  repeat-x 0 center;
 }
 
 .ganttview-block-text {
@@ -128,7 +160,12 @@ div.ganttview-block-container {
 	height: 12px;
 	font-size: 0.8em;
 	color: #999;
-	padding: 2px 3px;
+	width:100%;
+	height:98%;
+	vertical-align:middle;
+    text-align: center;
+    overflow:hidden;
+    cursor: default;
 }
 
 
@@ -136,4 +173,93 @@ div.ganttview-block-container {
 
 div.ganttview-block div.ui-resizable-handle.ui-resizable-s {
 	bottom: -0;
+}
+
+div#tooltip
+{
+    
+    width: 310px;
+	z-index: 9999;
+	padding: 5px;
+	color: black;	
+	background: #BCCADA   repeat-x 0 top;
+	text-align:center;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius: 10px 10px 10px 10px;
+	-webkit-box-shadow: 4px 4px 4px #919191;
+ 	-moz-box-shadow: 4px 4px 4px #919191;
+ 	box-shadow: 4px 4px 4px #919191; 
+	margin-top: 16px;
+	margin-left: 16px;
+	position: fixed;
+	display: none;
+	text-align:left;
+	padding: 10px 10px 10px 10px;   
+    opacity: 0.85;
+	/* For IE 8 */     
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=135, Color='#919191')"; 
+    /* For IE 5.5 - 7 */   
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=135, Color='#919191'); 
+    /*End*/
+ 
+}
+		
+span.esn
+{
+    font-weight:bold;
+    padding: 0px 5px 0px 5px;
+}
+
+span.from
+{
+    position:absolute;
+    left: 4px;
+    padding-left:3px;
+}
+
+span.to
+{
+    position:absolute;
+    right: 4px;
+    padding-right:3px;
+}
+
+div.workscope
+{
+    text-align:center;
+}
+
+/* ToolTip */ 
+div.tooltip_inner_data_title
+{
+    font-weight:bold;    
+}
+
+span.tooltip_inner_data 
+{
+    position:relative;
+    text-align:center;
+    font-weight:normal;    
+}
+
+span.sperator
+{
+    margin-left:25px;
+}
+
+div.ganttview-grid-row-cell-month-view
+{
+    float: left;
+    width: 20px;
+	height: 31px;
+	border-right: 1px solid #f0f0f0;
+	border-top: 1px solid #f0f0f0;
+	background-color: #FFFFFF;
+    
+}
+
+div.ganttview-grid-row
+{
+    overflow:hidden;
 }
