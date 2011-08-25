@@ -3,8 +3,14 @@ jQuery.ganttView
 
 The jQuery.ganttView plugin is a very lightweight plugin for creating a Gantt chart in plain HTML...no vector graphics or images required.  The plugin supports dragging and resizing the Gantt blocks and callbacks to trap the updated data.
 
-![Sample Gantt](http://github.com/thegrubbsian/jquery.ganttView/raw/master/example/jquery-ganttview.png)
-![Sample Gantt](http://github.com/thegrubbsian/jquery.ganttView/raw/master/example/jquery-ganttview2.png)
+A title formatter and an hover event has been added in this fork. It will handle overlaps (static, not yet when blocks are moved).
+
+
+![Sample Gantt](http://github.com/mivano/jquery.ganttView/raw/master/example/jquery-ganttview.png)
+
+The chart can also show Month/Year overviews besides the Day/Month views. 
+
+![Sample Gantt](http://github.com/mivano/jquery.ganttView/raw/master/example/jquery-ganttview2.png)
 
 Browser Compatibility
 ---------------------
@@ -27,7 +33,7 @@ Documentation will be coming soon!  I promise...
 
 Contribution
 ------------
-Many people have been asking for more advanced features such as variable time-span for the blocks (hours, weeks, etc.) as well as support for hierarchical items and multiple items per line.  While I would love to be able to add all of these features I just don't have the time and it's often not within the scope of why I created the plugin.  However, I would be extremely happy to accept any pull requests from anyone interested in adding these features.  If you like the plugin, feel free to fork it and submit your patches back.
+Oday Hazeem and Mohammed Zurba did most of the work for the added features.
 
 
 License
