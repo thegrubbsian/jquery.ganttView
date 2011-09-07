@@ -49,3 +49,14 @@ var ganttData = [
 		]
 	}
 ];
+
+var unhierarchicalGanttData = [
+	{
+		series: [
+			{ name: "Feature 1", start: new Date(2011,08,01), end: new Date(2011,08,03) },
+			{ name: "Feature 2", start: new Date(2011,08,02), end: new Date(2011,08,05), color: "#f0f0f0" },
+			{ name: "Feature 3", start: new Date(2011,08,01), end: new Date(2011,08,10) }
+		]
+	}
+
+];
