@@ -2,6 +2,13 @@
 jQuery.ganttView v.0.8.8
 Copyright (c) 2010 JC Grubbs - jc.grubbs@devmynd.com
 MIT License Applies
+
+branch unixdates
+Has changed the way of shipping date to unix timestamp
+to be easier to work with php
+by Augusto Weiand
+e-mail: guto.weiand@gmail.com
+Date: 16/02/2012
 */
 
 /*
@@ -59,20 +66,20 @@ behavior: {
 		if (opts.data) {
 			build();
 		} else if (opts.dataUrl) {
-			jQuery.getJSON(opts.dataUrl, function (data) { opts.data = data; build(); });
+			jQuery.getJSON(opts.dataUrl, function (data) {opts.data = convertDates(opts.data); build();});
 		}
 
 		function build() {
-			
+			opts.data = convertDates(opts.data);
 			var minDays = Math.floor((opts.slideWidth / opts.cellWidth)  + 5);
 			var startEnd = DateUtils.getBoundaryDatesFromData(opts.data, minDays);
 			opts.start = startEnd[0];
 			opts.end = startEnd[1];
-			
+            
 	        els.each(function () {
 
 	            var container = jQuery(this);
-	            var div = jQuery("<div>", { "class": "ganttview" });
+	            var div = jQuery("<div>", {"class": "ganttview"});
 	            new Chart(div, opts).render();
 				container.append(div);
 				
@@ -83,6 +90,21 @@ behavior: {
 	            new Behavior(container, opts).apply();
 	        });
 		}
+    }
+    
+    /*
+     Translate the unix timestamp into a javascript date object
+     */
+    function convertDates(arrData) {
+        arr = jQuery(arrData);
+        arr.each(function() {
+            series = jQuery(this.series);
+            series.each(function() {
+                this.start = new Date(this.start*1000);
+                this.end = new Date(this.end*1000);
+            });
+        });
+        return arr;
     }
 
 	function handleMethod(method, value) {
@@ -104,7 +126,7 @@ behavior: {
 
             var slideDiv = jQuery("<div>", {
                 "class": "ganttview-slide-container",
-                "css": { "width": opts.slideWidth + "px" }
+                "css": {"width": opts.slideWidth + "px"}
             });
 			
             dates = getDates(opts.start, opts.end);
@@ -127,7 +149,7 @@ behavior: {
 			var last = start;
 			while (last.compareTo(end) == -1) {
 				var next = last.clone().addDays(1);
-				if (!dates[next.getFullYear()]) { dates[next.getFullYear()] = []; }
+				if (!dates[next.getFullYear()]) {dates[next.getFullYear()] = [];}
 				if (!dates[next.getFullYear()][next.getMonth()]) { 
 					dates[next.getFullYear()][next.getMonth()] = []; 
 				}
@@ -138,16 +160,16 @@ behavior: {
         }
 
         function addVtHeader(div, data, cellHeight) {
-            var headerDiv = jQuery("<div>", { "class": "ganttview-vtheader" });
+            var headerDiv = jQuery("<div>", {"class": "ganttview-vtheader"});
             for (var i = 0; i < data.length; i++) {
-                var itemDiv = jQuery("<div>", { "class": "ganttview-vtheader-item" });
+                var itemDiv = jQuery("<div>", {"class": "ganttview-vtheader-item"});
                 itemDiv.append(jQuery("<div>", {
                     "class": "ganttview-vtheader-item-name",
-                    "css": { "height": (data[i].series.length * cellHeight) + "px" }
+                    "css": {"height": (data[i].series.length * cellHeight) + "px"}
                 }).append(data[i].name));
-                var seriesDiv = jQuery("<div>", { "class": "ganttview-vtheader-series" });
+                var seriesDiv = jQuery("<div>", {"class": "ganttview-vtheader-series"});
                 for (var j = 0; j < data[i].series.length; j++) {
-                    seriesDiv.append(jQuery("<div>", { "class": "ganttview-vtheader-series-name" })
+                    seriesDiv.append(jQuery("<div>", {"class": "ganttview-vtheader-series-name"})
 						.append(data[i].series[j].name));
                 }
                 itemDiv.append(seriesDiv);
@@ -157,9 +179,9 @@ behavior: {
         }
 
         function addHzHeader(div, dates, cellWidth) {
-            var headerDiv = jQuery("<div>", { "class": "ganttview-hzheader" });
-            var monthsDiv = jQuery("<div>", { "class": "ganttview-hzheader-months" });
-            var daysDiv = jQuery("<div>", { "class": "ganttview-hzheader-days" });
+            var headerDiv = jQuery("<div>", {"class": "ganttview-hzheader"});
+            var monthsDiv = jQuery("<div>", {"class": "ganttview-hzheader-months"});
+            var daysDiv = jQuery("<div>", {"class": "ganttview-hzheader-days"});
             var totalW = 0;
 			for (var y in dates) {
 				for (var m in dates[y]) {
@@ -167,10 +189,10 @@ behavior: {
 					totalW = totalW + w;
 					monthsDiv.append(jQuery("<div>", {
 						"class": "ganttview-hzheader-month",
-						"css": { "width": (w - 1) + "px" }
+						"css": {"width": (w - 1) + "px"}
 					}).append(monthNames[m] + "/" + y));
 					for (var d in dates[y][m]) {
-						daysDiv.append(jQuery("<div>", { "class": "ganttview-hzheader-day" })
+						daysDiv.append(jQuery("<div>", {"class": "ganttview-hzheader-day"})
 							.append(dates[y][m][d].getDate()));
 					}
 				}
@@ -182,12 +204,12 @@ behavior: {
         }
 
         function addGrid(div, data, dates, cellWidth, showWeekends) {
-            var gridDiv = jQuery("<div>", { "class": "ganttview-grid" });
-            var rowDiv = jQuery("<div>", { "class": "ganttview-grid-row" });
+            var gridDiv = jQuery("<div>", {"class": "ganttview-grid"});
+            var rowDiv = jQuery("<div>", {"class": "ganttview-grid-row"});
 			for (var y in dates) {
 				for (var m in dates[y]) {
 					for (var d in dates[y][m]) {
-						var cellDiv = jQuery("<div>", { "class": "ganttview-grid-row-cell" });
+						var cellDiv = jQuery("<div>", {"class": "ganttview-grid-row-cell"});
 						if (DateUtils.isWeekend(dates[y][m][d]) && showWeekends) { 
 							cellDiv.addClass("ganttview-weekend"); 
 						}
@@ -207,10 +229,10 @@ behavior: {
         }
 
         function addBlockContainers(div, data) {
-            var blocksDiv = jQuery("<div>", { "class": "ganttview-blocks" });
+            var blocksDiv = jQuery("<div>", {"class": "ganttview-blocks"});
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < data[i].series.length; j++) {
-                    blocksDiv.append(jQuery("<div>", { "class": "ganttview-block-container" }));
+                    blocksDiv.append(jQuery("<div>", {"class": "ganttview-block-container"}));
                 }
             }
             div.append(blocksDiv);
@@ -236,7 +258,7 @@ behavior: {
                     if (data[i].series[j].color) {
                         block.css("background-color", data[i].series[j].color);
                     }
-                    block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
+                    block.append(jQuery("<div>", {"class": "ganttview-block-text"}).text(size));
                     jQuery(rows[rowIdx]).append(block);
                     rowIdx = rowIdx + 1;
                 }
@@ -246,7 +268,7 @@ behavior: {
         function addBlockData(block, data, series) {
         	// This allows custom attributes to be added to the series data objects
         	// and makes them available to the 'data' argument of click, resize, and drag handlers
-        	var blockData = { id: data.id, name: data.name };
+        	var blockData = {id: data.id, name: data.name};
         	jQuery.extend(blockData, series);
         	block.data("block-data", blockData);
         }
@@ -281,7 +303,7 @@ behavior: {
 
         function bindBlockClick(div, callback) {
             jQuery("div.ganttview-block", div).live("click", function () {
-                if (callback) { callback(jQuery(this).data("block-data")); }
+                if (callback) {callback(jQuery(this).data("block-data"));}
             });
         }
         
@@ -292,7 +314,7 @@ behavior: {
         		stop: function () {
         			var block = jQuery(this);
         			updateDataAndPosition(div, block, cellWidth, startDate);
-        			if (callback) { callback(block.data("block-data")); }
+        			if (callback) {callback(block.data("block-data"));}
         		}
         	});
         }
@@ -304,7 +326,7 @@ behavior: {
         		stop: function () {
         			var block = jQuery(this);
         			updateDataAndPosition(div, block, cellWidth, startDate);
-        			if (callback) { callback(block.data("block-data")); }
+        			if (callback) {callback(block.data("block-data"));}
         		}
         	});
         }
@@ -340,7 +362,7 @@ behavior: {
 	
         contains: function (arr, obj) {
             var has = false;
-            for (var i = 0; i < arr.length; i++) { if (arr[i] == obj) { has = true; } }
+            for (var i = 0; i < arr.length; i++) {if (arr[i] == obj) {has = true;}}
             return has;
         }
     };
@@ -348,11 +370,11 @@ behavior: {
     var DateUtils = {
     	
         daysBetween: function (start, end) {
-            if (!start || !end) { return 0; }
-            start = Date.parse(start); end = Date.parse(end);
-            if (start.getYear() == 1901 || end.getYear() == 8099) { return 0; }
+            if (!start || !end) {return 0;}
+            start = Date.parse(start);end = Date.parse(end);
+            if (start.getYear() == 1901 || end.getYear() == 8099) {return 0;}
             var count = 0, date = start.clone();
-            while (date.compareTo(end) == -1) { count = count + 1; date.addDays(1); }
+            while (date.compareTo(end) == -1) {count = count + 1;date.addDays(1);}
             return count;
         },
         
@@ -361,14 +383,14 @@ behavior: {
         },
 
 		getBoundaryDatesFromData: function (data, minDays) {
-			var minStart = new Date(); maxEnd = new Date();
+			var minStart = new Date();maxEnd = new Date();
 			for (var i = 0; i < data.length; i++) {
 				for (var j = 0; j < data[i].series.length; j++) {
 					var start = Date.parse(data[i].series[j].start);
 					var end = Date.parse(data[i].series[j].end)
-					if (i == 0 && j == 0) { minStart = start; maxEnd = end; }
-					if (minStart.compareTo(start) == 1) { minStart = start; }
-					if (maxEnd.compareTo(end) == -1) { maxEnd = end; }
+					if (i == 0 && j == 0) {minStart = start;maxEnd = end;}
+					if (minStart.compareTo(start) == 1) {minStart = start;}
+					if (maxEnd.compareTo(end) == -1) {maxEnd = end;}
 				}
 			}
 			
