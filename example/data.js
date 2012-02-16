@@ -1,4 +1,29 @@
+/*
+ For test with new parameters, I change the dates for unix timestamp 
+ */
+
 var ganttData = [
+{
+		id: 1, name: "Feature 1", series: [
+			{ name: "Planned", start: 1329184800, end: 1329185900 },
+			{ name: "Actual", start: 1349184800, end: 1379184800, color: "#f0f0f0" }
+		]
+	},
+	{
+		id: 2, name: "Feature 2", series: [
+			{ name: "Planned", start: 1329184800, end: 1329184800 },
+			{ name: "Actual", start: 1329184800, end: 1329184800, color: "#f0f0f0" },
+			{ name: "Projected", start: 1329184800, end: 1329184800, color: "#e0e0e0" }
+		]
+	}, 
+	{
+		id: 3, name: "Feature 3", series: [
+			{ name: "Planned", start: 1329184800, end: 1329184800 },
+			{ name: "Actual", start: 1329184800, end: 1329184800, color: "#f0f0f0" }
+		]
+	}
+];
+/*
 	{
 		id: 1, name: "Feature 1", series: [
 			{ name: "Planned", start: new Date(2010,00,01), end: new Date(2010,00,03) },
@@ -49,3 +74,4 @@ var ganttData = [
 		]
 	}
 ];
+*/
