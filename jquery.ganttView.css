@@ -91,7 +91,7 @@ div.ganttview-slide-container {
 
 div.ganttview-grid-row-cell {
 	width: 20px;
-	height: 31px;
+	height: 100%;
 	border-right: 1px solid #f0f0f0;
 	border-top: 1px solid #f0f0f0;
 }
@@ -105,6 +105,12 @@ div.ganttview-grid-row-cell.ganttview-weekend {
 
 div.ganttview-blocks {
 	margin-top: 40px;
+  opacity: 0.8;
+}
+
+div.ganttview-block:hover {
+  z-index: 9999;
+  opacity: 1;
 }
 
 div.ganttview-block-container {
