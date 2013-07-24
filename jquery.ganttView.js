@@ -14,6 +14,7 @@ cellHeight: number
 slideWidth: number
 groupBySeries: boolean
 groupById: boolean
+groupByIdDrawAllTitles: boolean
 dataUrl: string
 behavior: {
 	clickable: boolean,
@@ -48,8 +49,9 @@ behavior: {
             cellWidth: 21,
             cellHeight: 31,
             slideWidth: 400,
-            groupById: false,
             groupBySeries: false,
+            groupById: false,
+            groupByIdDrawAllTitles: false,
             vHeaderWidth: 100,
             behavior: {
             	clickable: true,
@@ -105,7 +107,7 @@ behavior: {
 		
 		function render() {
             
-            addVtHeader(div, opts.data, opts.cellHeight, opts.groupBySeries, opts.groupById);
+            addVtHeader(div, opts.data, opts.cellHeight, opts.groupBySeries, opts.groupById, opts.groupByIdDrawAllTitles);
 
             var slideDiv = jQuery("<div>", {
                 "class": "ganttview-slide-container",
@@ -142,7 +144,7 @@ behavior: {
 						return dates;
         }
 
-        function addVtHeader(div, data, cellHeight, groupBySeries, groupById) {
+        function addVtHeader(div, data, cellHeight, groupBySeries, groupById, groupByIdDrawAllTitles) {
             var listId = {};
             var rowIdx = 1;
             var headerDiv = jQuery("<div>", { "class": "ganttview-vtheader" });
@@ -177,7 +179,10 @@ behavior: {
                          else
                          {
                             var itemDiv = headerDiv.children(':nth-child('+listId[ id ]+')');
-                            itemDiv.find('.ganttview-vtheader-item-name').append('<br />'+data[i].name);
+                            if(groupByIdDrawAllTitles)
+                            {
+                            	itemDiv.find('.ganttview-vtheader-item-name').append('<br />'+data[i].name);
+                            }
                              
                             var serieNames = new Array();
                             for (var j = 0; j < data[i].series.length; j++)
@@ -185,7 +190,10 @@ behavior: {
                                 serieNames.push(data[i].series[j].name);
                             }
                             
-                            itemDiv.find('.ganttview-vtheader-series-name').append('<br />'+serieNames.join(', '));
+                            if(groupByIdDrawAllTitles)
+                            {
+                            	itemDiv.find('.ganttview-vtheader-series-name').append('<br />'+serieNames.join(', '));
+                            }
                          }
 	              }
 	              else
