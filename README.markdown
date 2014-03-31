@@ -37,7 +37,7 @@ of the following license:
 
 The MIT License
 
-Copyright (c) 2010 Frank (JC) Grubbs - jc.grubbs@devmynd.com
+Copyright (c) 2010 JC Grubbs - jc.grubbs@devmynd.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
