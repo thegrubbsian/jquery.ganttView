@@ -22,7 +22,7 @@ The plugin depends on the following libraries:
 
 Documentation
 -------------
-Documentation will be coming soon!  I promise...
+(April 2014) We're starting a process to update the plugin, and will be adding documentation in parallel. So, stay tuned...
 
 
 Contribution
