@@ -137,3 +137,16 @@ div.ganttview-block-text {
 div.ganttview-block div.ui-resizable-handle.ui-resizable-s {
 	bottom: -0;
 }
+
+/* bootstrap css fix - begin */ 
+/* Uncomment if bootstrap.js is giving you issues */
+/* https://github.com/thegrubbsian/jquery.ganttView/issues/29 */
+/*
+#ganttChart div,
+#ganttChart div:before,
+#ganttChart div:after {
+-webkit-box-sizing: initial;
+-moz-box-sizing: initial;
+box-sizing: initial;
+}
+*/
