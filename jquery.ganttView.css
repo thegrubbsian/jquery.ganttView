@@ -126,7 +126,7 @@ div.ganttview-block-text {
 	position: absolute;
 	height: 12px;
 	font-size: 0.8em;
-	color: #999;
+	color: #666;
 	padding: 2px 3px;
 }
 
@@ -136,3 +136,25 @@ div.ganttview-block-text {
 div.ganttview-block div.ui-resizable-handle.ui-resizable-s {
 	bottom: -0;
 }
+
+
+/**
+ * block color theme:
+ * the phase name & color could be changed as you like
+ */
+div.ganttview-block {
+	background-color: #E5ECF9;
+}
+div.ganttview-block.requirement-phase {
+	background-color: #f0f0f0;
+}
+div.ganttview-block.design-phase {
+	background-color: #E1DBFC;
+}
+div.ganttview-block.implementation-phase {
+	background-color: #DBF8FC;
+}
+div.ganttview-block.testing-phase {
+	background-color: #e0e0e0;
+}
+

@@ -233,8 +233,11 @@ behavior: {
                         }
                     });
                     addBlockData(block, data[i], series);
-                    if (data[i].series[j].color) {
-                        block.css("background-color", data[i].series[j].color);
+                    if (series.phase) {
+                        block.addClass(series.phase + '-phase');
+                    }
+                    if (series.color) {
+                        block.css("background-color", series.color);
                     }
                     block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
                     jQuery(rows[rowIdx]).append(block);

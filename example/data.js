@@ -1,51 +1,53 @@
 var ganttData = [
 	{
 		id: 1, name: "Feature 1", series: [
-			{ name: "Planned", start: new Date(2010,00,01), end: new Date(2010,00,03) },
-			{ name: "Actual", start: new Date(2010,00,02), end: new Date(2010,00,05), color: "#f0f0f0" }
+			{ name: "Planned", start: new Date(2010,0,1), end: new Date(2010,0,3) },
+			{ name: "Actual", start: new Date(2010,0,2), end: new Date(2010,0,5), color: "#f0f0f0" }
 		]
 	}, 
 	{
 		id: 2, name: "Feature 2", series: [
-			{ name: "Planned", start: new Date(2010,00,05), end: new Date(2010,00,20) },
-			{ name: "Actual", start: new Date(2010,00,06), end: new Date(2010,00,17), color: "#f0f0f0" },
-			{ name: "Projected", start: new Date(2010,00,06), end: new Date(2010,00,17), color: "#e0e0e0" }
+			{ name: "Planned", start: new Date(2010,0,5), end: new Date(2010,0,20) },
+			{ name: "Actual", start: new Date(2010,0,6), end: new Date(2010,0,17), color: "#f0f0f0" },
+			{ name: "Projected", start: new Date(2010,0,6), end: new Date(2010,0,17), color: "#e0e0e0" }
 		]
 	}, 
 	{
 		id: 3, name: "Feature 3", series: [
-			{ name: "Planned", start: new Date(2010,00,11), end: new Date(2010,01,03) },
-			{ name: "Actual", start: new Date(2010,00,15), end: new Date(2010,01,03), color: "#f0f0f0" }
+			{ name: "Requirement", start: new Date(2010,0,11), end: new Date(2010,0,16), phase: "requirement" },
+			{ name: "Design", start: new Date(2010,0,16), end: new Date(2010,0,24), phase: "design" },
+			{ name: "Implementation", start: new Date(2010,0,24), end: new Date(2010,1,3), phase: "implementation" },
+			{ name: "Testing", start: new Date(2010,1,3), end: new Date(2010,1,13), phase: "testing" }
 		]
 	}, 
 	{
 		id: 4, name: "Feature 4", series: [
-			{ name: "Planned", start: new Date(2010,01,01), end: new Date(2010,01,03) },
-			{ name: "Actual", start: new Date(2010,01,01), end: new Date(2010,01,05), color: "#f0f0f0" }
+			{ name: "Planned", start: new Date(2010,1,1), end: new Date(2010,1,3) },
+			{ name: "Actual", start: new Date(2010,1,1), end: new Date(2010,1,5), color: "#f0f0f0" }
 		]
 	},
 	{
 		id: 5, name: "Feature 5", series: [
-			{ name: "Planned", start: new Date(2010,02,01), end: new Date(2010,03,20) },
-			{ name: "Actual", start: new Date(2010,02,01), end: new Date(2010,03,26), color: "#f0f0f0" }
+			{ name: "Planned", start: new Date(2010,2,1), end: new Date(2010,3,20) },
+			{ name: "Actual", start: new Date(2010,2,1), end: new Date(2010,3,26), color: "#f0f0f0" }
 		]
 	}, 
 	{
 		id: 6, name: "Feature 6", series: [
-			{ name: "Planned", start: new Date(2010,00,05), end: new Date(2010,00,20) },
-			{ name: "Actual", start: new Date(2010,00,06), end: new Date(2010,00,17), color: "#f0f0f0" },
-			{ name: "Projected", start: new Date(2010,00,06), end: new Date(2010,00,20), color: "#e0e0e0" }
+			{ name: "Planned", start: new Date(2010,0,5), end: new Date(2010,0,20) },
+			{ name: "Actual", start: new Date(2010,0,6), end: new Date(2010,0,17), color: "#f0f0f0" },
+			{ name: "Projected", start: new Date(2010,0,6), end: new Date(2010,0,20), color: "#e0e0e0" }
 		]
 	}, 
 	{
 		id: 7, name: "Feature 7", series: [
-			{ name: "Planned", start: new Date(2010,00,11), end: new Date(2010,01,03) }
+			{ name: "Planned", start: new Date(2010,0,11), end: new Date(2010,1,3) }
 		]
 	}, 
 	{
 		id: 8, name: "Feature 8", series: [
-			{ name: "Planned", start: new Date(2010,01,01), end: new Date(2010,01,03) },
-			{ name: "Actual", start: new Date(2010,01,01), end: new Date(2010,01,05), color: "#f0f0f0" }
+			{ name: "Planned", start: new Date(2010,1,1), end: new Date(2010,1,3) },
+			{ name: "Actual", start: new Date(2010,1,1), end: new Date(2010,1,5), color: "#f0f0f0" }
 		]
 	}
 ];
