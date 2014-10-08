@@ -15,19 +15,23 @@ Dependencies
 ------------
 The plugin depends on the following libraries:
 
-- jQuery 1.7 or higher (obviously) (updated for v 0.8.9)
+- jQuery 1.7 or higher (updated for v 0.8.9)
 - jQuery-UI 1.8 or higher
 - date.js
 
 
 Documentation
 -------------
-(April 2014) We're starting a process to update the plugin, and will be adding documentation in parallel. So, stay tuned...
+v 0.9.x should see further documentation additions. 
 
 
 Contribution
 ------------
-Many people have been asking for more advanced features such as variable time-span for the blocks (hours, weeks, etc.) as well as support for hierarchical items and multiple items per line.  While I would love to be able to add all of these features I just don't have the time and it's often not within the scope of why I created the plugin.  However, I would be extremely happy to accept any pull requests from anyone interested in adding these features.  If you like the plugin, feel free to fork it and submit your patches back.
+Many people have been asking for more advanced features such as variable time-span for the blocks (hours, weeks, etc.) as well as support for hierarchical items and multiple items per line.  While I would love to be able to add all of these features I just don't have the time and it's often not within the scope of why I created the plugin.  
+
+That said, we'd be interested to discuss pull requests from anyone interested in adding these features.  If you like the plugin, feel free to fork it and submit your patches back.
+
+**Please Note:** If you'd like to offer a new feature please help us out by submitting the pull request with only the fewest changes necessary to make the change. We've gotten a few that we can't immediately integrate because there's multiple changes in a single request, some of which don't fit with the direction of the plugin. 
 
 
 License
