@@ -22,16 +22,27 @@ The plugin depends on the following libraries:
 
 Documentation
 -------------
-v 0.9.x should see further documentation additions. 
+Forthcoming
 
 
-Contribution
+Contribution Guidelines
 ------------
-Many people have been asking for more advanced features such as variable time-span for the blocks (hours, weeks, etc.) as well as support for hierarchical items and multiple items per line.  While I would love to be able to add all of these features I just don't have the time and it's often not within the scope of why I created the plugin.  
+The internal roadmap for the plugin is detailed in the project wiki. If you're interested in features outside of what's described there, we'd be interested to discuss pull requests that would add these features.  If you like the plugin, feel free to fork it and submit your patches back.
 
-That said, we'd be interested to discuss pull requests from anyone interested in adding these features.  If you like the plugin, feel free to fork it and submit your patches back.
+**Guidelines:** If you'd like to offer a new feature please help us out by submitting the pull request with only the fewest changes necessary. 
 
-**Please Note:** If you'd like to offer a new feature please help us out by submitting the pull request with only the fewest changes necessary to make the change. We've gotten a few that we can't immediately integrate because there's multiple changes in a single request, some of which don't fit with the direction of the plugin. 
+Ideal: Fork the project, apply just the individual changes to the individual files effected, submit pull request. 
+
+Those pull requests can usually be automatically merged and closed through the site here. 
+
+If your pull request includes things like:
+
+- changes to dependencies or where they're hosted
+- stylistic modifications
+- moving project files to different directories
+- more than one new feature / functional change
+
+... one of us will have to do the work of carving out just the feature being pulled. Your request is likely to sit unmerged for a while if that's the case. 
 
 
 License
