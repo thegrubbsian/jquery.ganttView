@@ -43,7 +43,7 @@ If your pull request includes things like:
 - moving project files to different directories
 - more than one new feature / functional change
 
-... one of us will have to do the work of carving out just the feature being pulled. Your request is likely to sit unmerged for a while if that's the case. 
+one of us will have to do the work of carving out just the feature being pulled. Your request is likely to sit unmerged for a while if that's the case. 
 
 
 License
