@@ -8,6 +8,7 @@ MIT License Applies
 Options
 -----------------
 showWeekends: boolean
+showToday: boolean
 data: object
 cellWidth: number
 cellHeight: number
@@ -43,6 +44,7 @@ behavior: {
     	var els = this;
         var defaults = {
             showWeekends: true,
+            showToday: true,
             cellWidth: 21,
             cellHeight: 31,
             slideWidth: 400,
@@ -109,7 +111,7 @@ behavior: {
 			
             dates = getDates(opts.start, opts.end);
             addHzHeader(slideDiv, dates, opts.cellWidth);
-            addGrid(slideDiv, opts.data, dates, opts.cellWidth, opts.showWeekends);
+            addGrid(slideDiv, opts.data, dates, opts.cellWidth, opts.showWeekends, opts.showToday);
             addBlockContainers(slideDiv, opts.data);
             addBlocks(slideDiv, opts.data, opts.cellWidth, opts.start);
             div.append(slideDiv);
@@ -141,10 +143,11 @@ behavior: {
             var headerDiv = jQuery("<div>", { "class": "ganttview-vtheader" });
             for (var i = 0; i < data.length; i++) {
                 var itemDiv = jQuery("<div>", { "class": "ganttview-vtheader-item" });
-                itemDiv.append(jQuery("<div>", {
-                    "class": "ganttview-vtheader-item-name",
-                    "css": { "height": (data[i].series.length * cellHeight) + "px" }
-                }).append(data[i].name));
+		if ($.trim(data[i].name).length > 0)
+	                itemDiv.append(jQuery("<div>", {
+        	            "class": "ganttview-vtheader-item-name",
+                	    "css": { "height": (data[i].series.length * cellHeight) + "px" }
+	                }).append(data[i].name));
                 var seriesDiv = jQuery("<div>", { "class": "ganttview-vtheader-series" });
                 for (var j = 0; j < data[i].series.length; j++) {
                     seriesDiv.append(jQuery("<div>", { "class": "ganttview-vtheader-series-name" })
@@ -181,7 +184,7 @@ behavior: {
             div.append(headerDiv);
         }
 
-        function addGrid(div, data, dates, cellWidth, showWeekends) {
+        function addGrid(div, data, dates, cellWidth, showWeekends, showToday) {
             var gridDiv = jQuery("<div>", { "class": "ganttview-grid" });
             var rowDiv = jQuery("<div>", { "class": "ganttview-grid-row" });
 			for (var y in dates) {
@@ -190,6 +193,9 @@ behavior: {
 						var cellDiv = jQuery("<div>", { "class": "ganttview-grid-row-cell" });
 						if (DateUtils.isWeekend(dates[y][m][d]) && showWeekends) { 
 							cellDiv.addClass("ganttview-weekend"); 
+						}
+						if (DateUtils.isToday(dates[y][m][d]) && showToday) { 
+							cellDiv.addClass("ganttview-today"); 
 						}
 						rowDiv.append(cellDiv);
 					}
@@ -358,6 +364,10 @@ behavior: {
         
         isWeekend: function (date) {
             return date.getDay() % 6 == 0;
+        },
+
+        isToday: function (date) {
+            return date.isToday();
         },
 
 		getBoundaryDatesFromData: function (data, minDays) {
