@@ -6,7 +6,6 @@ The jQuery.ganttView plugin is a very lightweight plugin for creating a Gantt ch
 [![Sample Gantt](https://raw.githubusercontent.com/thegrubbsian/jquery.ganttView/master/example/jquery-ganttview.png) A sample chart](http://thegrubbsian.github.io/jquery.ganttView/example/index.html)
 
 
-
 Browser Compatibility
 ---------------------
 Currently the plugin has been tested, and is working in: FF 3.5+, Chrome 5+, Safari 4+, IE8+.  There are minor issues in IE7 and I haven't even attempted to use it in IE6.  If you encounter any issues with any version of Internet Explorer and would like to contribute CSS fixes please do so, several people have asked for IE6 support.
@@ -16,14 +15,14 @@ Dependencies
 ------------
 The plugin depends on the following libraries:
 
-- jQuery 1.7 or higher (updated for v 0.8.9)
+- jQuery 1.4 or higher (obviously)
 - jQuery-UI 1.8 or higher
 - date.js
 
 
 Documentation
 -------------
-Forthcoming
+Forthcoming...
 
 
 Contribution Guidelines
