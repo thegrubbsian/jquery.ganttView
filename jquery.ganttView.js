@@ -280,7 +280,7 @@ behavior: {
 		}
 
         function bindBlockClick(div, callback) {
-            jQuery("div.ganttview-block", div).live("click", function () {
+            jQuery("div.ganttview-block", div).on("click", function () {
                 if (callback) { callback(jQuery(this).data("block-data")); }
             });
         }
