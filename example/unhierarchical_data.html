@@ -29,8 +29,8 @@
 	<script type="text/javascript">
 		$(function () {
 			$("#ganttChart").ganttView({ 
-				data: ganttData,
-				slideWidth: 200,
+				data: unhierarchicalGanttData,
+				slideWidth: 500,
 				behavior: {
 					onClick: function (data) { 
 						var msg = "You clicked on an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
