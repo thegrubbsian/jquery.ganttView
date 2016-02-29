@@ -53,7 +53,7 @@ div.ganttview-hzheader-day {
 
 div.ganttview-vtheader {
 	margin-top: 41px;
-	width: 240px;
+	width: auto;
 	overflow: hidden;
 	background-color: #fff;
 }
@@ -78,6 +78,9 @@ div.ganttview-vtheader-series-name {
 	padding-left: 5px;
 }
 
+div.ganttview-vtheader-series-name.no-name {
+	border-top-color: #fff;
+}
 
 /* Slider */
 
@@ -100,6 +103,9 @@ div.ganttview-grid-row-cell.ganttview-weekend {
 	background-color: #fafafa;
 }
 
+div.ganttview-grid-row-cell.ganttview-today {
+	background-color: #F7F9FF !important;
+}
 
 /* Blocks */
 
@@ -110,6 +116,7 @@ div.ganttview-blocks {
 div.ganttview-block-container {
 	height: 28px;
 	padding-top: 4px;
+	text-align: left;
 }
 
 div.ganttview-block {
@@ -120,6 +127,10 @@ div.ganttview-block {
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
+}
+
+div.ganttview-block:not(:first-child) {
+	margin-top: -27px;
 }
 
 div.ganttview-block-text {
@@ -136,3 +147,16 @@ div.ganttview-block-text {
 div.ganttview-block div.ui-resizable-handle.ui-resizable-s {
 	bottom: -0;
 }
+
+/* bootstrap css fix - begin */
+/* Uncomment if bootstrap.js is giving you issues */
+/* https://github.com/thegrubbsian/jquery.ganttView/issues/29 */
+/*
+#ganttChart div,
+#ganttChart div:before,
+#ganttChart div:after {
+-webkit-box-sizing: initial;
+-moz-box-sizing: initial;
+box-sizing: initial;
+}
+*/

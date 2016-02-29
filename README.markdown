@@ -15,7 +15,7 @@ Dependencies
 ------------
 The plugin depends on the following libraries:
 
-- jQuery 1.4 or higher (obviously)
+- jQuery 1.7 or higher
 - jQuery-UI 1.8 or higher
 - date.js
 
