@@ -78,6 +78,9 @@ div.ganttview-vtheader-series-name {
 	padding-left: 5px;
 }
 
+div.ganttview-vtheader-series-name.no-name {
+	border-top-color: #fff;
+}
 
 /* Slider */
 
@@ -126,6 +129,10 @@ div.ganttview-block {
 	-webkit-border-radius: 3px;
 }
 
+div.ganttview-block:not(:first-child) {
+	margin-top: -27px;
+}
+
 div.ganttview-block-text {
 	position: absolute;
 	height: 12px;
@@ -141,7 +148,7 @@ div.ganttview-block div.ui-resizable-handle.ui-resizable-s {
 	bottom: -0;
 }
 
-/* bootstrap css fix - begin */ 
+/* bootstrap css fix - begin */
 /* Uncomment if bootstrap.js is giving you issues */
 /* https://github.com/thegrubbsian/jquery.ganttView/issues/29 */
 /*
