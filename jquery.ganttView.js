@@ -39,7 +39,6 @@ behavior: {
     };
     
     function build(options) {
-    	
     	var els = this;
         var defaults = {
             showWeekends: true,
@@ -63,12 +62,14 @@ behavior: {
 		}
 
 		function build() {
-			
+
 			var minDays = Math.floor((opts.slideWidth / opts.cellWidth)  + 5);
 			var startEnd = DateUtils.getBoundaryDatesFromData(opts.data, minDays);
 			opts.start = startEnd[0];
 			opts.end = startEnd[1];
-			
+
+			$('div.ganttview').remove(); // clear existing display
+
 	        els.each(function () {
 
 	            var container = jQuery(this);
@@ -82,6 +83,23 @@ behavior: {
 	            
 	            new Behavior(container, opts).apply();
 	        });
+
+			$('.ganttview-vtheader').sortable({
+				placeholder: "ui-state-highlight",
+				helper:'clone',
+				start: function (event, ui) {
+					$(ui.item).data("pos", ui.item.index());
+				},
+				stop: function (event, ui) {
+					var startIndex = ui.item.data("pos") + 1;
+					var newIndex = ui.item.index() + 1;
+					if (newIndex != startIndex){
+						console.log("item has moved from position "+ startIndex +" to position "+ newIndex);
+						opts.data = ArrayUtils.sortData(opts.data);
+						build();
+					}
+				}
+			});
 		}
     }
 
@@ -140,7 +158,7 @@ behavior: {
         function addVtHeader(div, data, cellHeight) {
             var headerDiv = jQuery("<div>", { "class": "ganttview-vtheader" });
             for (var i = 0; i < data.length; i++) {
-                var itemDiv = jQuery("<div>", { "class": "ganttview-vtheader-item" });
+                var itemDiv = jQuery("<div>", { "class": "ganttview-vtheader-item sortable", "data-pos": i });
                 itemDiv.append(jQuery("<div>", {
                     "class": "ganttview-vtheader-item-name",
                     "css": { "height": (data[i].series.length * cellHeight) + "px" }
@@ -280,7 +298,7 @@ behavior: {
 		}
 
         function bindBlockClick(div, callback) {
-            jQuery("div.ganttview-block", div).live("click", function () {
+            jQuery("div.ganttview-block", div).click(function () {
                 if (callback) { callback(jQuery(this).data("block-data")); }
             });
         }
@@ -342,7 +360,15 @@ behavior: {
             var has = false;
             for (var i = 0; i < arr.length; i++) { if (arr[i] == obj) { has = true; } }
             return has;
-        }
+        },
+
+		sortData: function (arr) {
+			var newdata = [];
+			$('.ganttview-vtheader-item').each(function(){
+				newdata[$(this).index()] = arr[this.getAttribute("data-pos")];
+			});
+			return newdata;
+		}
     };
 
     var DateUtils = {
