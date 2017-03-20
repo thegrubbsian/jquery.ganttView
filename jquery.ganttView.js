@@ -236,6 +236,23 @@ behavior: {
                     if (data[i].series[j].color) {
                         block.css("background-color", data[i].series[j].color);
                     }
+                    if (data[i].series[j].progress) {
+                        block.append(jQuery("<div>", { 
+                        	"class": "ganttview-block-progress",
+                        	"css": {
+                        		"position": "absolute",
+                        		"background-color": "#FFF",
+                        		"height": "25px",
+                        		"width": data[i].series[j].progress,
+                        		"left": "-1px",
+                        		"top": "-1px",
+                        		"border": "1px solid #999",
+                        		"-webkit-border-radius": "3px",
+					"top": "-1px",
+					"opacity": "0.6"
+                        	}
+                        }));
+                    }
                     block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
                     jQuery(rows[rowIdx]).append(block);
                     rowIdx = rowIdx + 1;
