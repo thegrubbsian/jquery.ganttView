@@ -140,7 +140,7 @@ behavior: {
         function addVtHeader(div, data, cellHeight) {
             var headerDiv = jQuery("<div>", { "class": "ganttview-vtheader" });
             for (var i = 0; i < data.length; i++) {
-                var itemDiv = jQuery("<div>", { "class": "ganttview-vtheader-item" });
+                var itemDiv = jQuery("<div>", { "id": "ganttview-vtheader-item-" + data[i].id, "class": "ganttview-vtheader-item" });
                 itemDiv.append(jQuery("<div>", {
                     "class": "ganttview-vtheader-item-name",
                     "css": { "height": (data[i].series.length * cellHeight) + "px" }
@@ -210,7 +210,7 @@ behavior: {
             var blocksDiv = jQuery("<div>", { "class": "ganttview-blocks" });
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < data[i].series.length; j++) {
-                    blocksDiv.append(jQuery("<div>", { "class": "ganttview-block-container" }));
+                    blocksDiv.append(jQuery("<div>", { "id": "ganttview-block-container-" + data[i].id + "-" + j, "class": "ganttview-block-container" }));
                 }
             }
             div.append(blocksDiv);
