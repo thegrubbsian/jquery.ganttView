@@ -11,6 +11,7 @@ showWeekends: boolean
 data: object
 cellWidth: number
 cellHeight: number
+start: date
 slideWidth: number
 dataUrl: string
 behavior: {
@@ -63,12 +64,11 @@ behavior: {
 		}
 
 		function build() {
-			
-			var minDays = Math.floor((opts.slideWidth / opts.cellWidth)  + 5);
-			var startEnd = DateUtils.getBoundaryDatesFromData(opts.data, minDays);
-			opts.start = startEnd[0];
-			opts.end = startEnd[1];
-			
+	        var minDays = Math.floor((opts.slideWidth / opts.cellWidth)  + 5);
+	        var startEnd = DateUtils.getBoundaryDatesFromData(opts.data, minDays);
+	        if (!opts.start) {opts.start = startEnd[0];}
+	        opts.end = startEnd[1];
+
 	        els.each(function () {
 
 	            var container = jQuery(this);
@@ -222,22 +222,29 @@ behavior: {
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < data[i].series.length; j++) {
                     var series = data[i].series[j];
-                    var size = DateUtils.daysBetween(series.start, series.end) + 1;
-					var offset = DateUtils.daysBetween(start, series.start);
-					var block = jQuery("<div>", {
-                        "class": "ganttview-block",
-                        "title": series.name + ", " + size + " days",
-                        "css": {
-                            "width": ((size * cellWidth) - 9) + "px",
-                            "margin-left": ((offset * cellWidth) + 3) + "px"
-                        }
-                    });
-                    addBlockData(block, data[i], series);
-                    if (data[i].series[j].color) {
-                        block.css("background-color", data[i].series[j].color);
+                    if (series.start != "" && series.end != "" && Date.parse(series.end) >= start) {
+                      var size = DateUtils.daysBetween(series.start, series.end) + 1;
+                      var series_start = Date.parse(series.start);
+                      if (series_start >= start ) {
+                        var offset = DateUtils.daysBetween(start, series_start);
+                      } else {
+                        var offset = -(DateUtils.daysBetween(series_start, start));
+                      }
+                      var block = jQuery("<div>", {
+                          "class": "tooltip ganttview-block",
+                          "title": series.name + ", " + size + " days",
+                          "css": {
+                              "width": ((size * cellWidth) - 9) + "px",
+                              "margin-left": ((offset * cellWidth) + 3) + "px"
+                          }
+                      });
+                      addBlockData(block, data[i], series);
+                      if (data[i].series[j].color) {
+                          block.css("background-color", data[i].series[j].color);
+                      }
+                      block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
+                      jQuery(rows[rowIdx]).append(block);
                     }
-                    block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
-                    jQuery(rows[rowIdx]).append(block);
                     rowIdx = rowIdx + 1;
                 }
             }
@@ -364,11 +371,13 @@ behavior: {
 			var minStart = new Date(); maxEnd = new Date();
 			for (var i = 0; i < data.length; i++) {
 				for (var j = 0; j < data[i].series.length; j++) {
-					var start = Date.parse(data[i].series[j].start);
-					var end = Date.parse(data[i].series[j].end)
-					if (i == 0 && j == 0) { minStart = start; maxEnd = end; }
-					if (minStart.compareTo(start) == 1) { minStart = start; }
-					if (maxEnd.compareTo(end) == -1) { maxEnd = end; }
+				  if (data[i].series[j].start != "" && data[i].series[j].end != "") {
+				    var start = Date.parse(data[i].series[j].start);
+				    var end = Date.parse(data[i].series[j].end);
+				    if (i == 0 && j == 0) { minStart = start; maxEnd = end; }
+				    if (minStart.compareTo(start) == 1) { minStart = start; }
+				    if (maxEnd.compareTo(end) == -1) { maxEnd = end; }
+				  }
 				}
 			}
 			
