@@ -28,10 +28,10 @@ behavior: {
 (function (factory) {
 	if (typeof module === "object" && typeof module.expots === "object") {
 		// if 'module' is defined. Pass a jQuery object from module system.
-		module.exports = factory(require("jquery"), window, document);
+		module.exports = factory(require("jquery"));
 	} else {
-		// It works on browser. Pass a jQuery object
-		factory(jQuery, window, document);
+		// It works on browser. Pass a jQuery object from Global.
+		factory(jQuery);
 	}
 }(gantt));
 
