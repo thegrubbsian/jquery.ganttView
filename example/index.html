@@ -31,6 +31,9 @@
 			$("#ganttChart").ganttView({ 
 				data: ganttData,
 				slideWidth: 900,
+				groupBySeries: true,
+				groupById: true,
+				groupByIdDrawAllTitles: true,
 				behavior: {
 					onClick: function (data) { 
 						var msg = "You clicked on an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
