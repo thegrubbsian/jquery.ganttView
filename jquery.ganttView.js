@@ -24,16 +24,6 @@ behavior: {
 }
 */
 
-// to CommonJS
-(function (factory) {
-	if (typeof module === "object" && typeof module.expots === "object") {
-		// if 'module' is defined. Pass a jQuery object from module system.
-		module.exports = factory(require("jquery"));
-	} else {
-		// It works on browser. Pass a jQuery object from Global.
-		factory(jQuery);
-	}
-}(gantt));
 
 const gantt = function (jQuery) {
 	
@@ -417,3 +407,14 @@ const gantt = function (jQuery) {
     };
 
 };
+
+// to CommonJS
+(function (factory) {
+    if (typeof module === "object" && typeof module.expots === "object") {
+        // if 'module' is defined. Pass a jQuery object from module system.
+        module.exports = factory(require("jquery"));
+    } else {
+        // It works on browser. Pass a jQuery object from Global.
+        factory(jQuery);
+    }
+}(gantt));
