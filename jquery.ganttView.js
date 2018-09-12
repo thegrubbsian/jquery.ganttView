@@ -39,11 +39,11 @@ const gantt = function (jQuery) {
 
         var args = Array.prototype.slice.call(arguments);
 
-        if (args.length == 1 && typeof(args[0]) == "object") {
+        if (args.length === 1 && typeof(args[0]) === "object") {
             build.call(this, args[0]);
         }
 
-        if (args.length == 2 && typeof(args[0]) == "string") {
+        if (args.length === 2 && typeof(args[0]) === "string") {
             handleMethod.call(this, args[0], args[1]);
         }
     };
@@ -113,7 +113,7 @@ const gantt = function (jQuery) {
 
     function handleMethod(method, value) {
 
-        if (method == "setSlideWidth") {
+        if (method === "setSlideWidth") {
             var div = $("div.ganttview", this);
             div.each(function () {
                 var vtWidth = $("div.ganttview-vtheader", div).outerWidth();
@@ -162,7 +162,7 @@ const gantt = function (jQuery) {
             dates[start.getFullYear()] = [];
             dates[start.getFullYear()][start.getMonth()] = [start]
             var last = start;
-            while (last.compareTo(end) == -1) {
+            while (last.compareTo(end) === -1) {
                 var next = last.clone().addDays(1);
                 if (!dates[next.getFullYear()]) {
                     dates[next.getFullYear()] = [];
@@ -390,7 +390,7 @@ const gantt = function (jQuery) {
         contains: function (arr, obj) {
             var has = false;
             for (var i = 0; i < arr.length; i++) {
-                if (arr[i] == obj) {
+                if (arr[i] === obj) {
                     has = true;
                 }
             }
@@ -406,11 +406,11 @@ const gantt = function (jQuery) {
             }
             start = Date.parse(start);
             end = Date.parse(end);
-            if (start.getYear() == 1901 || end.getYear() == 8099) {
+            if (start.getYear() === 1901 || end.getYear() === 8099) {
                 return 0;
             }
             var count = 0, date = start.clone();
-            while (date.compareTo(end) == -1) {
+            while (date.compareTo(end) === -1) {
                 count = count + 1;
                 date.addDays(1);
             }
@@ -418,7 +418,7 @@ const gantt = function (jQuery) {
         },
 
         isWeekend: function (date) {
-            return date.getDay() % 6 == 0;
+            return date.getDay() % 6 === 0;
         },
 
         isToday: function (date) {
@@ -432,14 +432,14 @@ const gantt = function (jQuery) {
                 for (var j = 0; j < data[i].series.length; j++) {
                     var start = Date.parse(parseDate(data[i].series[j].start));
                     var end = Date.parse(parseDate(data[i].series[j].end));
-                    if (i == 0 && j == 0) {
+                    if (i === 0 && j === 0) {
                         minStart = start;
                         maxEnd = end;
                     }
-                    if (minStart.compareTo(start) == 1) {
+                    if (minStart.compareTo(start) === 1) {
                         minStart = start;
                     }
-                    if (maxEnd.compareTo(end) == -1) {
+                    if (maxEnd.compareTo(end) === -1) {
                         maxEnd = end;
                     }
                 }
