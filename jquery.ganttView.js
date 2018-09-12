@@ -202,16 +202,21 @@ const gantt = function (jQuery) {
             var daysDiv = jQuery("<div>", {"class": "ganttview-hzheader-days"});
             var totalW = 0;
             for (var y in dates) {
+                if (dates.hasOwnProperty(y))
                 for (var m in dates[y]) {
-                    var w = dates[y][m].length * cellWidth;
-                    totalW = totalW + w;
-                    monthsDiv.append(jQuery("<div>", {
-                        "class": "ganttview-hzheader-month",
-                        "css": {"width": (w - 1) + "px"}
-                    }).append(monthNames[m] + "/" + y));
-                    for (var d in dates[y][m]) {
-                        daysDiv.append(jQuery("<div>", {"class": "ganttview-hzheader-day"})
-                            .append(dates[y][m][d].getDate()));
+                    if (dates[y].hasOwnProperty(m)) {
+                        var w = dates[y][m].length * cellWidth;
+                        totalW = totalW + w;
+                        monthsDiv.append(jQuery("<div>", {
+                            "class": "ganttview-hzheader-month",
+                            "css": {"width": (w - 1) + "px"}
+                        }).append(monthNames[m] + "/" + y));
+                        for (var d in dates[y][m]) {
+                            if (dates[y][m].hasOwnProperty(d)) {
+                                daysDiv.append(jQuery("<div>", {"class": "ganttview-hzheader-day"})
+                                    .append(dates[y][m][d].getDate()));
+                            }
+                        }
                     }
                 }
             }
@@ -225,16 +230,20 @@ const gantt = function (jQuery) {
             var gridDiv = jQuery("<div>", {"class": "ganttview-grid"});
             var rowDiv = jQuery("<div>", {"class": "ganttview-grid-row"});
             for (var y in dates) {
+                if (dates.hasOwnProperty(y))
                 for (var m in dates[y]) {
+                    if (dates[y].hasOwnProperty(m))
                     for (var d in dates[y][m]) {
-                        var cellDiv = jQuery("<div>", {"class": "ganttview-grid-row-cell"});
-                        if (DateUtils.isWeekend(dates[y][m][d]) && showWeekends) {
-                            cellDiv.addClass("ganttview-weekend");
+                        if (dates[y][m].hasOwnProperty(d)) {
+                            var cellDiv = jQuery("<div>", {"class": "ganttview-grid-row-cell"});
+                            if (DateUtils.isWeekend(dates[y][m][d]) && showWeekends) {
+                                cellDiv.addClass("ganttview-weekend");
+                            }
+                            if (DateUtils.isToday(dates[y][m][d]) && showToday) {
+                                cellDiv.addClass("ganttview-today");
+                            }
+                            rowDiv.append(cellDiv);
                         }
-                        if (DateUtils.isToday(dates[y][m][d]) && showToday) {
-                            cellDiv.addClass("ganttview-today");
-                        }
-                        rowDiv.append(cellDiv);
                     }
                 }
             }
