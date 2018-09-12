@@ -160,7 +160,7 @@ const gantt = function (jQuery) {
             end = parseDate(end);
             var dates = [];
             dates[start.getFullYear()] = [];
-            dates[start.getFullYear()][start.getMonth()] = [start]
+            dates[start.getFullYear()][start.getMonth()] = [start];
             var last = start;
             while (last.compareTo(end) === -1) {
                 var next = last.clone().addDays(1);
