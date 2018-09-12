@@ -58,7 +58,6 @@ const gantt = function (jQuery) {
             showToday: true,
             cellWidth: 21,
             cellHeight: 31,
-            slideWidth: 400,
             vHeaderWidth: 100,
             behavior: {
             	clickable: true,
@@ -75,27 +74,32 @@ const gantt = function (jQuery) {
 			jQuery.getJSON(opts.dataUrl, function (data) { opts.data = data; build(); });
 		}
 
-		function build() {
-			
-			var minDays = Math.floor((opts.slideWidth / opts.cellWidth)  + 5);
-			var startEnd = DateUtils.getBoundaryDatesFromData(opts.data, minDays);
-			opts.start = startEnd[0];
-			opts.end = startEnd[1];
-			
-	        els.each(function () {
+        function build() {
 
-	            var container = jQuery(this);
-	            var div = jQuery("<div>", { "class": "ganttview" });
-	            new Chart(div, opts).render();
-				container.append(div);
-				
-				var w = jQuery("div.ganttview-vtheader", container).outerWidth() +
-					jQuery("div.ganttview-slide-container", container).outerWidth();
-	            container.css("width", (w + 2) + "px");
-	            
-	            new Behavior(container, opts).apply();
-	        });
-		}
+            var minDays = 20;
+            if (opts.slideWidth) {
+                minDays = Math.floor((opts.slideWidth / opts.cellWidth) + 5);
+            }
+            var startEnd = DateUtils.getBoundaryDatesFromData(opts.data, minDays);
+            opts.start = startEnd[0];
+            opts.end = startEnd[1];
+
+            els.each(function () {
+
+                var container = jQuery(this);
+                var div = jQuery("<div>", {"class": "ganttview"});
+                new Chart(div, opts).render();
+                container.append(div);
+
+                if (opts.slideWidth) {
+                    var w = jQuery("div.ganttview-vtheader", container).outerWidth() +
+                        jQuery("div.ganttview-slide-container", container).outerWidth();
+                    container.css("width", (w + 2) + "px");
+                }
+
+                new Behavior(container, opts).apply();
+            });
+        }
     }
 
 	function handleMethod(method, value) {
@@ -115,11 +119,20 @@ const gantt = function (jQuery) {
 		function render() {
 			addVtHeader(div, opts.data, opts.cellHeight);
 
-            var slideDiv = jQuery("<div>", {
-                "class": "ganttview-slide-container",
-                "css": { "width": opts.slideWidth + "px" }
-            });
-			
+            var slideDiv;
+
+            if (opts.slideWidth) {
+                slideDiv = jQuery("<div>", {
+                    "class": "ganttview-slide-container",
+                    "css": {"width": opts.slideWidth + "px"}
+                });
+            } else {
+                slideDiv = jQuery("<div>", {
+                    "class": "ganttview-slide-container",
+                    "css": {"width": "auto"}
+                });
+            }
+
             dates = getDates(opts.start, opts.end);
             addHzHeader(slideDiv, dates, opts.cellWidth);
             addGrid(slideDiv, opts.data, dates, opts.cellWidth, opts.showWeekends, opts.showToday);
@@ -253,7 +266,7 @@ const gantt = function (jQuery) {
                     if (data[i].series[j].color) {
                         block.css("background-color", data[i].series[j].color);
                     }
-                    block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
+                    block.append(jQuery("<div>", {"class": "ganttview-block-text"}).text(size));
                     jQuery(rows[rowIdx]).append(block);
                     rowIdx = rowIdx + 1;
                 }
