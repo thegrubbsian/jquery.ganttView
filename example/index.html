@@ -1,55 +1,47 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
+        "http://www.w3.org/TR/html4/strict.dtd">
 
 <html lang="en">
 <head>
-	<link rel="stylesheet" type="text/css" href="../lib/jquery-ui-1.8.4.css" />
-	<link rel="stylesheet" type="text/css" href="reset.css" />
-	<link rel="stylesheet" type="text/css" href="../jquery.ganttView.css" />
-	<style type="text/css">
-		body {
-			font-family: tahoma, verdana, helvetica;
-			font-size: 0.8em;
-			padding: 10px;
-		}
-	</style>
-	<title>jQuery Gantt</title>
+    <meta charset="UTF-8">
+    <title>jQuery Gantt</title>
+    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../jquery.ganttView.css"/>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../jquery.ganttView.js"></script>
+    <script type="application/javascript">
+        function loadGantView() {
+            $("#ganttChart").ganttView({
+                // data: data,
+                dataUrl: "data.json",
+                behavior: {
+                    onClick: function (data) {
+                        var msg = "You clicked on an event: { start: " + parseDate(data.start).toString("M/d/yyyy") + ", end: " + parseDate(data.end).toString("M/d/yyyy") + " }";
+                        $("#eventMessage").text(msg);
+                    },
+                    onResize: function (data) {
+                        var msg = "You resized an event: { start: " + parseDate(data.start).toString("M/d/yyyy") + ", end: " + parseDate(data.end).toString("M/d/yyyy") + " }";
+                        $("#eventMessage").text(msg);
+                    },
+                    onDrag: function (data) {
+                        var msg = "You dragged an event: { start: " + parseDate(data.start).toString("M/d/yyyy") + ", end: " + parseDate(data.end).toString("M/d/yyyy") + " }";
+                        $("#eventMessage").text(msg);
+                    }
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 
-	<div id="ganttChart"></div>
-	<br/><br/>
-	<div id="eventMessage"></div>
+<div id="ganttChart"></div>
+<br/><br/>
+<div id="eventMessage"></div>
+<input type="submit" value="Click Me!" onclick="loadGantView();"/>
 
-	<script type="text/javascript" src="../lib/jquery-1.4.2.js"></script>
-	<script type="text/javascript" src="../lib/date.js"></script>
-	<script type="text/javascript" src="../lib/jquery-ui-1.8.4.js"></script>
-	<script type="text/javascript" src="../jquery.ganttView.js"></script>
-	<script type="text/javascript" src="data.js"></script>
-	<script type="text/javascript">
-		$(function () {
-			$("#ganttChart").ganttView({ 
-				data: ganttData,
-				slideWidth: 900,
-				behavior: {
-					onClick: function (data) { 
-						var msg = "You clicked on an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
-						$("#eventMessage").text(msg);
-					},
-					onResize: function (data) { 
-						var msg = "You resized an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
-						$("#eventMessage").text(msg);
-					},
-					onDrag: function (data) { 
-						var msg = "You dragged an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
-						$("#eventMessage").text(msg);
-					}
-				}
-			});
-			
-			//$("#ganttChart").ganttView("setSlideWidth", 600);
-		});
-	</script>
 
 </body>
 </html>

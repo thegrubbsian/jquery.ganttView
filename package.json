@@ -1,0 +1,30 @@
+{
+  "name": "jquery-gantt-view",
+  "version": "0.8.9",
+  "description": "An editable jQuery Gantt chart plugin.",
+  "main": "./jquery.ganttView.js",
+  "style": [
+    "./jquery.ganttView.css"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "jquery-ui-dist": "^1.12.1",
+    "datejs": "git+https://github.com/datejs/Datejs.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thegrubbsian/jquery.ganttView.git"
+  },
+  "author": "thegrubbsian",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thegrubbsian/jquery.ganttView/issues"
+  },
+  "keywords": [
+    "jQuery", "Gantt", "chart", "jquery-plugin"
+  ],
+  "homepage": "https://github.com/thegrubbsian/jquery.ganttView"
+}
