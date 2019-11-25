@@ -21,7 +21,7 @@
 	<br/><br/>
 	<div id="eventMessage"></div>
 
-	<script type="text/javascript" src="../lib/jquery-1.4.2.js"></script>
+	<script type="text/javascript" src="../lib/jquery-3.1.1.min.js"></script>
 	<script type="text/javascript" src="../lib/date.js"></script>
 	<script type="text/javascript" src="../lib/jquery-ui-1.8.4.js"></script>
 	<script type="text/javascript" src="../jquery.ganttView.js"></script>
@@ -32,17 +32,17 @@
 				data: ganttData,
 				slideWidth: 900,
 				behavior: {
-					onClick: function (data) { 
-						var msg = "You clicked on an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
-						$("#eventMessage").text(msg);
+					clickable: true,
+					draggable: false,
+					resizable: false,
+					onClick: function (data) {
+						console.log(data);
 					},
-					onResize: function (data) { 
-						var msg = "You resized an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
-						$("#eventMessage").text(msg);
+					onResize: function (data) {
+						console.log(data);
 					},
-					onDrag: function (data) { 
-						var msg = "You dragged an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
-						$("#eventMessage").text(msg);
+					onDrag: function (data) {
+						console.log(data);
 					}
 				}
 			});
