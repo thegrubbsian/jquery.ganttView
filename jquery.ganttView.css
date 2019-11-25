@@ -136,3 +136,56 @@ div.ganttview-block-text {
 div.ganttview-block div.ui-resizable-handle.ui-resizable-s {
 	bottom: -0;
 }
+
+.ganttview .title-group-name{
+	background-color: #f2f7ff;
+}
+
+/*
+ganttview
+*/
+.ganttview .check-box-list-chart {
+	display: inline-block;
+	position: relative;
+	padding: 5px;
+	border-radius: 3px;
+	cursor: pointer;
+	font-size: 13px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.ganttview .check-box-list-chart input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+}
+
+.ganttview .check-box-list-chart input:checked ~ .checkmark {
+	background-color: #9aacd8;
+}
+
+.ganttview .check-box-list-chart input ~ .checkmark {
+	background-color: rgb(229, 229, 229);
+ }
+.ganttview .check-box-list-chart input:checked ~ .checkmark:after {
+	display: block;
+}
+
+.ganttview .check-box-list-chart .checkmark {
+	display: block;
+	float: left;
+	height: 5px;
+	width: 35px;
+	border-radius: 3px;
+	border: 1px solid #d6d3d3;
+}
+
+.ganttview .check-box-list-chart .checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}

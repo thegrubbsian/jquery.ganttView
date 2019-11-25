@@ -15,7 +15,8 @@ var ganttData = [
 	{
 		id: 3, name: "Feature 3", series: [
 			{ name: "Planned", start: new Date(2010,00,11), end: new Date(2010,01,03) },
-			{ name: "Actual", start: new Date(2010,00,15), end: new Date(2010,01,03), color: "#f0f0f0" }
+			{ name: "Actual", start: new Date(2010,00,15), end: new Date(2010,01,03), color: "#f0f0f0" },
+			{ name: "asdf", start: new Date(2010,00,13), end: new Date(2010,01,06), color: "#f0f0f0" },
 		]
 	}, 
 	{
